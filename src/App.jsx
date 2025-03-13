@@ -1,4 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginForm from './routes/LoginForm';
+import RegisterForm from './routes/RegisterForm';
+import PrivateRoute from './components/PrivateRoute';
 import Home from './routes/Home';
 import About from './routes/About';
 import Categories from './routes/Categories';
@@ -9,25 +12,29 @@ import User from './routes/User';
 import Admin from './routes/Admin';
 import './App.css';
 
-const user = {
-  name: 'Paimon',
-  roles: ['user'],
-  rights: ['can_view_categories']
-};
-
-export const isAuthenticated = user => !!user;
-export const isAllowed = (user, rights) =>
-  rights.some(right => user.rights.includes(right));
-export const hasRole = (user, roles) =>
-  roles.some(role => user.roles.includes(role));
-
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        {hasRole(user, ['user']) && <Route path='/user' element={<User />} />}
-        {hasRole(user, ['admin']) && <Route path='/admin' element={<Admin />} />}
+        <Route path="/login" element={<LoginForm />} /> {/* Форма входа */}
+        <Route path="/register" element={<RegisterForm />} /> {/* Форма регистрации */}
+        <Route
+          path="/user"
+          element={
+            <PrivateRoute roles={['user']}>
+              <User />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute roles={['admin']}>
+              <Admin />
+            </PrivateRoute>
+          }
+        />
         <Route path="/categories" element={<Categories />} />
         <Route path="/category/:categoryCode?" element={<Category />} />
         <Route path="/about" element={<About />} />

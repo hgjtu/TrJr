@@ -1,14 +1,16 @@
 import React from 'react';
-import Header from '../components/Header';
+import { useAuth } from '../context/AuthContext';
 
-function Admin() {
-return (
+const Admin = () => {
+  const { user, logout } = useAuth();
+
+  return (
     <div>
-        <Header />
-        <main>
-            <p>РОЛЬ: АДМИН</p>
-        </main>
+      <h1>Admin Dashboard</h1>
+      <p>Welcome, {user?.name}!</p>
+      <button onClick={logout}>Logout</button>
     </div>
-);
-}
+  );
+};
+
 export default Admin;

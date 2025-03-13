@@ -1,14 +1,16 @@
 import React from 'react';
-import Header from '../components/Header';
+import { useAuth } from '../context/AuthContext';
 
-function User() {
-return (
+const User = () => {
+  const { user, logout } = useAuth();
+
+  return (
     <div>
-        <Header />
-        <main>
-            <p>РОЛЬ: ЮЗЕР</p>
-        </main>
+      <h1>User Dashboard</h1>
+      <p>Welcome, {user?.name}!</p>
+      <button onClick={logout}>Logout</button>
     </div>
-);
-}
+  );
+};
+
 export default User;
