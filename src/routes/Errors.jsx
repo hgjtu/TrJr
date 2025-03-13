@@ -1,7 +1,13 @@
 import React from 'react';
+import Header from '../components/Header';
 
 function NotFound() {
 return (
-    <p>НЕИЗВЕСТНАЯ СТРАНИЦА</p>
+    <div>
+        <Header />
+        <main>
+            <p>НЕИЗВЕСТНАЯ СТРАНИЦА</p>
+        </main>
+    </div>
 );};
 export default NotFound;
