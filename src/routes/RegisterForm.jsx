@@ -19,7 +19,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/register', formData);
+      const response = await axios.post('http://localhost:8010/api/v1/auth/sign-up', formData);
       if (response.data.success) {
         navigate('/login'); // Перенаправляем на страницу входа после успешной регистрации
       }

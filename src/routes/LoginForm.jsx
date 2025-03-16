@@ -20,7 +20,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/login', formData);
+      const response = await axios.post('http://localhost:8010/api/v1/auth/sign-in', formData);
       if (response.data.success) {
         login(response.data.user); // Устанавливаем пользователя в контексте
         navigate('/'); // Перенаправляем на главную страницу
