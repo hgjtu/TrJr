@@ -1,75 +1,45 @@
 import React, { useState } from 'react';
+import AuthService from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
-const RegisterForm = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
+function Register() {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8010/api/v1/auth/sign-up', formData);
-      if (response.data.success) {
-        navigate('/login'); // Перенаправляем на страницу входа после успешной регистрации
+      const response = await AuthService.register(username, email, password);
+      if (response.token) {
+        navigate('/');
       }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+    } catch (error) {
+      console.error('Registration failed', error);
     }
   };
 
   return (
     <div>
-      <h1>Register</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+      <h2>Register</h2>
+      <form onSubmit={handleRegister}>
         <div>
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
+          <label>Username</label>
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
         <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <label>Email</label>
+          <input type="password" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <label>Password</label>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <button type="submit">Register</button>
       </form>
-      <p>
-        Already have an account? <a href="/login">Login here</a>
-      </p>
     </div>
   );
-};
+}
 
-export default RegisterForm;
+export default Register;

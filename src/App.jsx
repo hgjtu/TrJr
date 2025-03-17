@@ -13,13 +13,19 @@ import Admin from './routes/Admin';
 import './App.css';
 
 function App() {
+  const isAuthenticated = AuthService.isAuthenticated();
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
+        <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/category/:categoryCode?" element={!isAuthenticated ? <Category /> : <Navigate to="/login" />} />
+        <Route path="/about" element={<About />} />
+        {/* <Route path="/agreement" element={<AgreementForm />} /> */}
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginForm />} /> {/* Форма входа */}
-        <Route path="/register" element={<RegisterForm />} /> {/* Форма регистрации */}
-        <Route
+        
+        {/* <Route
           path="/user"
           element={
             <PrivateRoute roles={['user']}>
@@ -34,11 +40,9 @@ function App() {
               <Admin />
             </PrivateRoute>
           }
-        />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/category/:categoryCode?" element={<Category />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/agreement" element={<AgreementForm />} />
+        /> */}
+
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -1,67 +1,40 @@
 import React, { useState } from 'react';
+import AuthService from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
 
-const LoginForm = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
+function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Используем метод login из контекста
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8010/api/v1/auth/sign-in', formData);
-      if (response.data.success) {
-        login(response.data.user); // Устанавливаем пользователя в контексте
-        navigate('/'); // Перенаправляем на главную страницу
+      const response = await AuthService.login(username, password);
+      if (response.token) {
+        navigate('/');
       }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+    } catch (error) {
+      console.error('Login failed', error);
     }
   };
 
   return (
     <div>
-      <h1>Login</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
         <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <label>Username</label>
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
         <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <label>Password</label>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <button type="submit">Login</button>
       </form>
-      <p>
-        Don't have an account? <a href="/register">Register here</a>
-      </p>
     </div>
   );
-};
+}
 
-export default LoginForm;
+export default Login;
