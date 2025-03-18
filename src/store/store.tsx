@@ -1,4 +1,3 @@
-import { createStore } from 'redux';
 import { configureStore } from '@reduxjs/toolkit'
 import agreementReducer from '../reducers/reducers';
 import userReducer from '../reducers/userReducer';

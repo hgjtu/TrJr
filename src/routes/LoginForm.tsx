@@ -19,21 +19,21 @@ const LoginForm: FC = () => {
             dispatch(setUser(response.data.user));
         }
         catch (error:any){
-            console.log(error.response.data);
+            console.log(error); //наверное так не стоит делать
         }
     };
 
-    const handleLogout = async () => {
-        try{
-            const response = await AuthService.logout();
-            localStorage.removeItem("token");
-            dispatch(setAuth(false));
-            dispatch(setUser(null));
-        }
-        catch (error:any){
-            console.log(error.response.data);
-        }
-    };
+    // const handleLogout = async () => {
+    //     try{
+    //         const response = await AuthService.logout();
+    //         localStorage.removeItem("token");
+    //         dispatch(setAuth(false));
+    //         dispatch(setUser(null));
+    //     }
+    //     catch (error:any){
+    //         console.log(error); //наверное так не стоит делать
+    //     }
+    // };
 
     return(
         <div>

@@ -1,9 +1,26 @@
 import React, { FC, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { UserState, setAuth, setUser } from '../reducers/userReducer';
+import AuthService from "../services/AuthService";
 
 const RegisterForm: FC = () => {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const dispatch = useDispatch();
+
+    const handleRegistration = async () => {
+        try{
+            const response = await AuthService.registration(username, email, password);
+            localStorage.setItem("token", response.data.accessToken);
+            dispatch(setAuth(true));
+            dispatch(setUser(response.data.user));
+        }
+        catch (error:any){
+            console.log(error); //наверное так не стоит делать
+        }
+    };
+
     return(
         <div>
             <input
@@ -15,7 +32,7 @@ const RegisterForm: FC = () => {
             <input
                 onChange={e => setEmail(e.target.value)}
                 value={email}
-                type="text"
+                type="email"
                 placeholder="Email"
             />
             <input
@@ -24,7 +41,7 @@ const RegisterForm: FC = () => {
                 type="password"
                 placeholder="Password"
             />
-            <button>Регистрация</button>
+            <button onClick={handleRegistration}>Регистрация</button>
         </div>
     )
 };
