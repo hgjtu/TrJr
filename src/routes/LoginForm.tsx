@@ -1,8 +1,40 @@
 import React, { FC, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { UserState, setAuth, setUser } from '../reducers/userReducer';
+import AuthService from "../services/AuthService";
 
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const isAuth = useSelector((state: UserState) => state.isAuth);
+    const user = useSelector((state: UserState) => state.user);
+    const dispatch = useDispatch();
+
+    const handleLogin = async () => {
+        try{
+            const response = await AuthService.login(username, password);
+            localStorage.setItem("token", response.data.accessToken);
+            dispatch(setAuth(true));
+            dispatch(setUser(response.data.user));
+        }
+        catch (error:any){
+            console.log(error.response.data);
+        }
+    };
+
+    const handleLogout = async () => {
+        try{
+            const response = await AuthService.logout();
+            localStorage.removeItem("token");
+            dispatch(setAuth(false));
+            dispatch(setUser(null));
+        }
+        catch (error:any){
+            console.log(error.response.data);
+        }
+    };
+
     return(
         <div>
             <input
@@ -17,7 +49,7 @@ const LoginForm: FC = () => {
                 type="password"
                 placeholder="Password"
             />
-            <button>Логин</button>
+            <button onClick={handleLogin}>Логин</button>
         </div>
     )
 };

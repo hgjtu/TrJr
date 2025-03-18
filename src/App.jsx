@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import LoginForm from './routes/LoginForm';
-// import RegisterForm from './routes/RegisterForm';
+import LoginForm from './routes/LoginForm';
+import RegisterForm from './routes/RegisterForm';
 // import PrivateRoute from './components/PrivateRoute';
 import Home from './routes/Home';
 import About from './routes/About';
@@ -22,8 +22,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/agreement" element={<AgreementForm />} />
         <Route path="/" element={<Home />} />
-        {/* <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} /> */}
+        
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
         {/* <Route
           path="/user"
           element={
