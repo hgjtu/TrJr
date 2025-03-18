@@ -1,4 +1,4 @@
-import { TOGGLE_AGREEMENT } from './actions';
+import { TOGGLE_AGREEMENT } from '../actions/actions';
 
 const initialState = {
   agreed: false,

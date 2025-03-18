@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleAgreement } from '../actions';
+import { toggleAgreement } from '../actions/actions';
 import Header from '../components/Header';
 
 const AgreementForm = () => {
