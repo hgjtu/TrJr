@@ -11,9 +11,16 @@ import NotFound from './routes/Errors';
 import './App.css';
 
 function App() {
+  const isAuthenticated = AuthService.isAuthenticated();
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
+        <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/category/:categoryCode?" element={!isAuthenticated ? <Category /> : <Navigate to="/login" />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/agreement" element={<AgreementForm />} />
         <Route path="/" element={<Home />} />
         {/* <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} /> */}
