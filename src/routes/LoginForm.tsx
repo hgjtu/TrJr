@@ -2,25 +2,33 @@ import React, { FC, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { UserState, setAuth, setUser } from '../reducers/userReducer';
 import AuthService from "../services/AuthService";
+import { configureStore } from "@reduxjs/toolkit";
+import { AuthResponse } from "../models/response/AuthResponse";
+import { API_URL } from "../http";
 
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const isAuth = useSelector((state: UserState) => state.isAuth);
-    const user = useSelector((state: UserState) => state.user);
+    // const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    // const user = useSelector((state: UserState) => state.user);
     const dispatch = useDispatch();
 
     const handleLogin = async () => {
         try{
             const response = await AuthService.login(username, password);
-            localStorage.setItem("token", response.data.accessToken);
+            localStorage.setItem("token", response.data.token);
             dispatch(setAuth(true));
-            dispatch(setUser(response.data.user));
+            
+            // dispatch(setUser(response.data.user));
         }
         catch (error:any){
             console.log(error); //наверное так не стоит делать
         }
+    };
+
+    const handleCheckAuth = async () => {
+        
     };
 
     // const handleLogout = async () => {

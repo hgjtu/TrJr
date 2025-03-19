@@ -7,14 +7,15 @@ const RegisterForm: FC = () => {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    
     const dispatch = useDispatch();
 
     const handleRegistration = async () => {
         try{
             const response = await AuthService.registration(username, email, password);
-            localStorage.setItem("token", response.data.accessToken);
+            localStorage.setItem("token", response.data.token);
             dispatch(setAuth(true));
-            dispatch(setUser(response.data.user));
+            // dispatch(setUser(response.data.user));
         }
         catch (error:any){
             console.log(error); //наверное так не стоит делать
