@@ -13,5 +13,8 @@ export default class AuthService{
 
     static async logout(): Promise <void>{
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+        window.location.reload();
     }
 }

@@ -14,8 +14,10 @@ const RegisterForm: FC = () => {
         try{
             const response = await AuthService.registration(username, email, password);
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("username", response.data.user.username);
+            localStorage.setItem("role", response.data.user.role);
             dispatch(setAuth(true));
-            // dispatch(setUser(response.data.user));
+            dispatch(setUser(response.data.user));
         }
         catch (error:any){
             console.log(error); //наверное так не стоит делать

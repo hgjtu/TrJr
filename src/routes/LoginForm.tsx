@@ -2,9 +2,6 @@ import React, { FC, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { UserState, setAuth, setUser } from '../reducers/userReducer';
 import AuthService from "../services/AuthService";
-import { configureStore } from "@reduxjs/toolkit";
-import { AuthResponse } from "../models/response/AuthResponse";
-import { API_URL } from "../http";
 
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>("");
@@ -18,7 +15,8 @@ const LoginForm: FC = () => {
         try{
             const response = await AuthService.login(username, password);
             localStorage.setItem("token", response.data.token);
-            localStorage.setItem("user", response.data.user);
+            localStorage.setItem("username", response.data.user.username);
+            localStorage.setItem("role", response.data.user.role);
             dispatch(setAuth(true));
             dispatch(setUser(response.data.user));
         }

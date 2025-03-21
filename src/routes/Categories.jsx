@@ -1,5 +1,4 @@
 import React,{ useState } from 'react';
-import Header from '../components/Header';
 import CategoryMini from '../components/CategoryMini';
 import '../styles/categories.css';
 
@@ -38,8 +37,7 @@ const Categories = () => {
     const [categories, setItems] = useState(CategoriesInitState);
 
     return (
-        <div>
-        <Header />
+        <div>   
         <h2>Категории</h2>
         <ul className='categories'>
             {categories.map((category) => (

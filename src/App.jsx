@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { setAuth } from './reducers/userReducer';
 import { useEffect } from "react";
+import Header from './components/Header';
 import LoginForm from './routes/LoginForm';
 import RegisterForm from './routes/RegisterForm';
 // import PrivateRoute from './components/PrivateRoute';
@@ -10,6 +11,7 @@ import About from './routes/About';
 import Categories from './routes/Categories';
 import Category from './routes/Category';
 import AgreementForm from './routes/AgreementForm';
+import Profile from './routes/Profile';
 import NotFound from './routes/Errors';
 import './App.css';
 
@@ -35,10 +37,14 @@ function App() {
 
   return (
     <BrowserRouter>
+    <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/login" element={!isAuth ? <LoginForm /> : <Navigate to="/" />} />
         <Route path="/register" element={!isAuth ? <RegisterForm /> : <Navigate to="/" />} />
+
+        <Route path="/profile" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
         
         <Route path="/categories" element={<Categories />} />
         <Route path="/category/:categoryCode?" element={isAuth ? <Category /> : <Navigate to="/login" />} />
