@@ -18,18 +18,18 @@ const LoginForm: FC = () => {
         try{
             const response = await AuthService.login(username, password);
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("user", response.data.user);
             dispatch(setAuth(true));
-            
-            // dispatch(setUser(response.data.user));
+            dispatch(setUser(response.data.user));
         }
         catch (error:any){
             console.log(error); //наверное так не стоит делать
         }
     };
 
-    const handleCheckAuth = async () => {
+    // const handleCheckAuth = async () => {
         
-    };
+    // };
 
     // const handleLogout = async () => {
     //     try{
