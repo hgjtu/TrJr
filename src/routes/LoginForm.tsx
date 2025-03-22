@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { UserState, setAuth, setUser } from '../reducers/userReducer';
 import AuthService from "../services/AuthService";
+import { Link } from "react-router-dom";
 
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>("");
@@ -21,6 +22,7 @@ const LoginForm: FC = () => {
             dispatch(setUser(response.data.user));
         }
         catch (error:any){
+            alert("ОШИБКА: такого пользователя не существует"); // очень сильное наебалово, надо сделать поумному
             console.log(error); //наверное так не стоит делать
         }
     };
@@ -43,6 +45,7 @@ const LoginForm: FC = () => {
 
     return(
         <div>
+            <div>
             <input
                 onChange={e => setUsername(e.target.value)}
                 value={username}
@@ -56,6 +59,8 @@ const LoginForm: FC = () => {
                 placeholder="Password"
             />
             <button onClick={handleLogin}>Логин</button>
+            </div>
+            <Link to="/register">Создать аккаунт</Link>
         </div>
     )
 };

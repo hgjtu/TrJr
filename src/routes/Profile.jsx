@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux';
 import UserServise from "../services/UserServise";
 import AuthService from "../services/AuthService";
 import profileIcon from '../assets/react.svg';
 import '../styles/profile.css';
 
 
-function Profile() {
+function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
     const [user, setUser] = useState({
         username: '',
         email: '',
         // profilePicture: '',
     });
     const [isEditing, setIsEditing] = useState(false);
+    const dispatch = useDispatch();
 
     // Загрузка данных пользователя при монтировании компонента
     useEffect(() => {
@@ -47,6 +48,8 @@ function Profile() {
 
     // Функция для выхода из профиля
     const handleLogout = async () => {
+        dispatch(setAuth(false));
+        dispatch(setUser(null));
         await AuthService.logout();
     };
 
@@ -63,6 +66,23 @@ function Profile() {
             }
         } catch (error) {
             console.error('Ошибка при сохранении данных:', error);
+        }
+    };
+
+    // Функция для уадления аккаунта
+    const handleDeleteProfile = async () => {
+        try {
+            const response = await UserServise.deleteUserProfile(user.username);
+            if (response.status == 204) {
+                alert('Профиль успешно удален!');
+                await AuthService.logout();
+                dispatch(setAuth(false));
+                dispatch(setUser(null));
+            } else {
+                alert('Ошибка при удалении профиля');
+            }
+        } catch (error) {
+            console.error('Ошибка при удалении профиля:', error);
         }
     };
 
@@ -120,6 +140,9 @@ function Profile() {
                         </button>
                         <button type="button" onClick={handleLogout}>
                             Выйти
+                        </button>
+                        <button type="button" onClick={handleDeleteProfile}>
+                            Удалить аккаунт
                         </button>
                     </div>
                 )}
