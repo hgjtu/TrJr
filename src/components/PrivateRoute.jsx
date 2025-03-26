@@ -1,19 +1,31 @@
-// import React from 'react';
-// import { Navigate } from 'react-router-dom';
-// import { useAuth } from '../context/AuthContext';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate, Outlet } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 
-// const PrivateRoute = ({ roles, children }) => {
-//   const { user, isAuthenticated } = useAuth();
+const PrivateRoute = () => {
+    const [isAuthenticated, setAuth] = useState(false);
 
-//   if (!isAuthenticated) {
-//     return <Navigate to="/login" />;
-//   }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+            const response = await AuthService.checkLogin();
+            if(response.status == 200) setAuth(true);
+            else setAuth(false);
+            } catch (error) {
+                console.log(error); //наверное так не стоит делать
+            }
+        };
+        
+        fetchData();
+        }, []);
+        
+    
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
 
-//   if (roles && !roles.some(role => user?.roles?.includes(role))) {
-//     return <Navigate to="/" />; // Редирект на главную, если нет прав
-//   }
+    return <Outlet />;
+};
 
-//   return children;
-// };
-
-// export default PrivateRoute;
+export default PrivateRoute;

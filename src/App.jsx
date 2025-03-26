@@ -2,16 +2,19 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { setAuth } from './reducers/userReducer';
 import { useEffect } from "react";
+import RoleGuard from './components/RoleGuard';
 import Header from './components/Header';
 import LoginForm from './routes/LoginForm';
 import RegisterForm from './routes/RegisterForm';
-// import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute';
 import Home from './routes/Home';
 import About from './routes/About';
 import Categories from './routes/Categories';
 import Category from './routes/Category';
 import AgreementForm from './routes/AgreementForm';
 import Profile from './routes/Profile';
+import UserPage from './routes/UserPage';
+import AdminPage from './routes/AdminPage';
 import NotFound from './routes/Errors';
 import './App.css';
 
@@ -52,27 +55,24 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/agreement" element={isAuth ? <AgreementForm /> : <Navigate to="/login" />} />
 
+        <Route element={<PrivateRoute />}>
+          <Route path="/user" element={
+            <RoleGuard requiredRoles={['USER', 'ADMIN']}>
+              <UserPage />
+            </RoleGuard>
+          } />
+          
+          <Route path="/admin" element={
+            <RoleGuard requiredRoles={['ADMIN']}>
+              <AdminPage />
+            </RoleGuard>
+          } />
+        </Route>
+
+
         <Route path="*" element={<NotFound />} />
         
         
-        {/* <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} /> */}
-        {/* <Route
-          path="/user"
-          element={
-            <PrivateRoute roles={['user']}>
-              <User />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute roles={['admin']}>
-              <Admin />
-            </PrivateRoute>
-          }
-        /> */}
 
         
         

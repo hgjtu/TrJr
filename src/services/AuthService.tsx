@@ -11,6 +11,10 @@ export default class AuthService{
         return $api.post<AuthResponse>("/auth/sign-up", {username, email, password});
     }
 
+    static async checkLogin(): Promise <AxiosResponse<Response>>{
+        return $api.get<AuthResponse>("/auth/check-login");
+    }
+
     static async logout(): Promise <void>{
         localStorage.removeItem('token');
         localStorage.removeItem('username');
