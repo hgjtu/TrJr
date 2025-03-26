@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleAgreement } from '../actions';
-import Header from '../components/Header';
+import { toggleAgreement } from '../actions/actions';
 
 const AgreementForm = () => {
   const agreed = useSelector((state) => state.agreed);
@@ -17,7 +16,6 @@ const AgreementForm = () => {
 
   return (
     <div>
-    <Header />
     <div>
       <h2>Пользовательское соглашение</h2>
       <div style={{ border: '1px solid #ccc', padding: '10px', maxHeight: '200px', overflowY: 'scroll', marginBottom: '20px' }}>

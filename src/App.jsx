@@ -1,38 +1,81 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuth } from './reducers/userReducer';
+import { useEffect } from "react";
+import Header from './components/Header';
+import LoginForm from './routes/LoginForm';
+import RegisterForm from './routes/RegisterForm';
+// import PrivateRoute from './components/PrivateRoute';
 import Home from './routes/Home';
 import About from './routes/About';
 import Categories from './routes/Categories';
 import Category from './routes/Category';
 import AgreementForm from './routes/AgreementForm';
+import Profile from './routes/Profile';
 import NotFound from './routes/Errors';
-import User from './routes/User';
-import Admin from './routes/Admin';
 import './App.css';
 
-const user = {
-  name: 'Paimon',
-  roles: ['user'],
-  rights: ['can_view_categories']
-};
-
-export const isAuthenticated = user => !!user;
-export const isAllowed = (user, rights) =>
-  rights.some(right => user.rights.includes(right));
-export const hasRole = (user, roles) =>
-  roles.some(role => user.roles.includes(role));
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(localStorage.getItem('token')){
+      try{
+        // const response = await axios.get<AuthResponse>(`${API_URL}/auth/check`);
+        // localStorage.setItem("token", response.data.token);
+        dispatch(setAuth(true));
+        // dispatch(setUser(response.data.user));
+      }
+      catch (error){
+          console.log(error); //наверное так не стоит делать
+      }
+    }
+  }, [])
+
+  const isAuth = useSelector((state) => state.user.isAuth);
+
   return (
     <BrowserRouter>
+    <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        {hasRole(user, ['user']) && <Route path='/user' element={<User />} />}
-        {hasRole(user, ['admin']) && <Route path='/admin' element={<Admin />} />}
+
+        <Route path="/login" element={!isAuth ? <LoginForm /> : <Navigate to="/" />} />
+        <Route path="/register" element={!isAuth ? <RegisterForm /> : <Navigate to="/" />} />
+
+        <Route path="/profile" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
+        
         <Route path="/categories" element={<Categories />} />
-        <Route path="/category/:categoryCode?" element={<Category />} />
+        <Route path="/category/:categoryCode?" element={isAuth ? <Category /> : <Navigate to="/login" />} />
+
         <Route path="/about" element={<About />} />
-        <Route path="/agreement" element={<AgreementForm />} />
+        <Route path="/agreement" element={isAuth ? <AgreementForm /> : <Navigate to="/login" />} />
+
         <Route path="*" element={<NotFound />} />
+        
+        
+        {/* <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} /> */}
+        {/* <Route
+          path="/user"
+          element={
+            <PrivateRoute roles={['user']}>
+              <User />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute roles={['admin']}>
+              <Admin />
+            </PrivateRoute>
+          }
+        /> */}
+
+        
+        
       </Routes>
     </BrowserRouter>
   );

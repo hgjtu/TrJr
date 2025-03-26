@@ -1,11 +1,9 @@
 import React from 'react';
-import Header from '../components/Header';
 import '../styles/home.css'
 
 function Home() {
 return (
     <div>
-        <Header />
         <main>
             <p>Я главная страница</p>
             <img src='https://vetson.ru/upload/iblock/13f/8q9rzriqcfajpnqyal3083m6n0dxnroi.png' alt="Cat"/>
