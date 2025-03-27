@@ -10,8 +10,8 @@ const RoleGuard = ({ children, requiredRoles }) => {
       return null; // Или <Loading />
   }
 
-  if (!requiredRoles.some(role => hasRole(role))) {
-      return <Navigate to="/access-denied" replace />;
+  if (!requiredRoles.includes(user.role)) {
+    return <Navigate to="/access-denied" replace />;
   }
 
   return children;
