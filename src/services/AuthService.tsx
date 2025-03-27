@@ -12,7 +12,7 @@ export default class AuthService{
     }
 
     static async checkLogin(): Promise <AxiosResponse<Response>>{
-        return $api.get<AuthResponse>("/auth/check-login");
+        return $api.get<AuthResponse>("/users/check-login");
     }
 
     static async logout(): Promise <void>{

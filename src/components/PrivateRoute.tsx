@@ -1,0 +1,43 @@
+
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuth, setUser, UserState } from '../reducers/userReducer';
+import { Navigate, Outlet } from 'react-router-dom';
+import AuthService from '../services/AuthService';
+import { RootState } from '../store/store';
+import React from 'react';
+
+const PrivateRoute = () => {
+    const dispatch = useDispatch();
+
+    const isAuth = useSelector((state: RootState) => state.user.isAuth);
+    const user = useSelector((state: UserState) => state.user);
+
+    const [isLoading, setIsLoading] = useState(true);
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        AuthService.checkLogin()
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log(response);
+                    dispatch(setAuth(true));
+                    dispatch(setUser(response.data.user));
+                }
+            })
+            .catch(() => dispatch(setAuth(false)))
+            .finally(() => setIsLoading(false));
+    }, []);
+
+    if (isLoading) {
+        return <div>Loading...</div>; // Или спиннер
+    }
+
+    if (!isAuth) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return <Outlet />; // Рендерит вложенные маршруты
+};
+
+export default PrivateRoute;

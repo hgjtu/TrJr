@@ -20,22 +20,6 @@ import './App.css';
 
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if(localStorage.getItem('token')){
-      try{
-        // const response = await axios.get<AuthResponse>(`${API_URL}/auth/check`);
-        // localStorage.setItem("token", response.data.token);
-        dispatch(setAuth(true));
-        // dispatch(setUser(response.data.user));
-      }
-      catch (error){
-          console.log(error); //наверное так не стоит делать
-      }
-    }
-  }, [])
-
   const isAuth = useSelector((state) => state.user.isAuth);
 
   return (
@@ -57,13 +41,13 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/user" element={
-            <RoleGuard requiredRoles={['USER', 'ADMIN']}>
+            <RoleGuard requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
               <UserPage />
             </RoleGuard>
           } />
           
           <Route path="/admin" element={
-            <RoleGuard requiredRoles={['ADMIN']}>
+            <RoleGuard requiredRoles={['ROLE_ADMIN']}>
               <AdminPage />
             </RoleGuard>
           } />

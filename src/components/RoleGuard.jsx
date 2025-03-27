@@ -1,15 +1,19 @@
-import { useAuth } from '../reducers/useAuth';
+// RoleGuard.jsx
 import { Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useAuth } from '../reducers/useAuth';
 
 const RoleGuard = ({ children, requiredRoles }) => {
-  const { hasRole } = useAuth();
-  
-  const hasAccess = requiredRoles.some(role => hasRole(role));
-  
-  if (!hasAccess) {
-    return <Navigate to="/login" replace />;
+  const user = useSelector((state) => state.user.user);
+
+  if (!user) {
+      return null; // Или <Loading />
   }
-  
+
+  if (!requiredRoles.some(role => hasRole(role))) {
+      return <Navigate to="/access-denied" replace />;
+  }
+
   return children;
 };
 

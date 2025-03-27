@@ -4,23 +4,7 @@ import UserService from "../services/UserService";
 
 const AdminPage = () => {
   const { user } = useAuth();
-  const [isAccess, setAccess] = useState(null);
-  const [users, setUsers] = useState(null);
-  const [stats, setStats] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await UserService.adminMainPageAccess();
-        if(response.status == 200) setAccess(true);
-        else setAccess(false);
-      } catch (error) {
-        console.error('Error fetching admin data:', error);
-      }
-    };
-    
-    fetchData();
-  }, []);
+  const [isAccess, setAccess] = useState(true);
 
   return (
     <div className="admin-page">

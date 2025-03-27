@@ -4,21 +4,7 @@ import UserService from "../services/UserService";
 
 const UserPage = () => {
   const { user } = useAuth();
-  const [isAccess, setAccess] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await UserService.userMainPageAccess();
-        if(response.status == 200) setAccess(true);
-        else setAccess(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    
-    fetchData();
-  }, []);
+  const [isAccess, setAccess] = useState(true);
 
   return (
     <div className="user-page">
