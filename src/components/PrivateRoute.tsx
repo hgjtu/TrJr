@@ -11,10 +11,9 @@ const PrivateRoute = () => {
     const dispatch = useDispatch();
 
     const isAuth = useSelector((state: RootState) => state.user.isAuth);
-    const user = useSelector((state: UserState) => state.user);
+    // const user = useSelector((state: UserState) => state.user);
 
     const [isLoading, setIsLoading] = useState(true);
-    // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         AuthService.checkLogin()
