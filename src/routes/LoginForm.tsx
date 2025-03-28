@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-
-    // const isAuth = useSelector((state: RootState) => state.user.isAuth);
-    // const user = useSelector((state: UserState) => state.user);
     const dispatch = useDispatch();
 
     const handleLogin = async () => {

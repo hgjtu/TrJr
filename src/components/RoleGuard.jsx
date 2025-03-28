@@ -1,10 +1,9 @@
 // RoleGuard.jsx
 import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useAuth } from '../reducers/useAuth';
 
 const RoleGuard = ({ children, requiredRoles }) => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
 
   if (!user) {
       return null; // Или <Loading />

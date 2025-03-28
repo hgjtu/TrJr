@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../reducers/useAuth';
-import UserService from "../services/UserService";
+import { useSelector } from 'react-redux';
 
 const UserPage = () => {
-  const { user } = useAuth();
+  const user = useSelector((state) => state.user).data;
   const [isAccess, setAccess] = useState(true);
+
+  console.log(user);
 
   return (
     <div className="user-page">

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleAgreement } from '../actions/actions';
 
 const AgreementForm = () => {
-  const agreed = useSelector((state) => state.agreed);
+  const agreed = useSelector((state) => state.agreement.agreed);
   const dispatch = useDispatch();
 
   const handleCheckboxChange = () => {

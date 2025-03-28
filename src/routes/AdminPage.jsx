@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../reducers/useAuth';
-import UserService from "../services/UserService";
+import { useSelector } from 'react-redux';
 
 const AdminPage = () => {
-  const { user } = useAuth();
+  const user = useSelector((state) => state.user);
   const [isAccess, setAccess] = useState(true);
 
   return (
