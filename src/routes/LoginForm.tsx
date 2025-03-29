@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-
-    // const isAuth = useSelector((state: RootState) => state.user.isAuth);
-    // const user = useSelector((state: UserState) => state.user);
     const dispatch = useDispatch();
 
     const handleLogin = async () => {
@@ -26,22 +23,6 @@ const LoginForm: FC = () => {
             console.log(error); //наверное так не стоит делать
         }
     };
-
-    // const handleCheckAuth = async () => {
-        
-    // };
-
-    // const handleLogout = async () => {
-    //     try{
-    //         const response = await AuthService.logout();
-    //         localStorage.removeItem("token");
-    //         dispatch(setAuth(false));
-    //         dispatch(setUser(null));
-    //     }
-    //     catch (error:any){
-    //         console.log(error); //наверное так не стоит делать
-    //     }
-    // };
 
     return(
         <div>
