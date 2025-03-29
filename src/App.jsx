@@ -30,16 +30,15 @@ function App() {
 
         <Route path="/login" element={!isAuth ? <LoginForm /> : <Navigate to="/" />} />
         <Route path="/register" element={!isAuth ? <RegisterForm /> : <Navigate to="/" />} />
-
-        <Route path="/profile" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
         
         <Route path="/categories" element={<Categories />} />
-        <Route path="/category/:categoryCode?" element={isAuth ? <Category /> : <Navigate to="/login" />} />
-
         <Route path="/about" element={<About />} />
-        <Route path="/agreement" element={isAuth ? <AgreementForm /> : <Navigate to="/login" />} />
 
         <Route element={<PrivateRoute />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/category/:categoryCode?" element={<Category />} />
+          <Route path="/agreement" element={<AgreementForm />} />
+
           <Route path="/user" element={
             <RoleGuard requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
               <UserPage />
@@ -53,12 +52,7 @@ function App() {
           } />
         </Route>
 
-
         <Route path="*" element={<NotFound />} />
-        
-        
-
-        
         
       </Routes>
     </BrowserRouter>

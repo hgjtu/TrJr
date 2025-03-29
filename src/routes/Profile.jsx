@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
 import UserService from "../services/UserService";
 import AuthService from "../services/AuthService";
 import profileIcon from '../assets/react.svg';
@@ -13,15 +12,11 @@ function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
         // profilePicture: '',
     });
     const [isEditing, setIsEditing] = useState(false);
-    const [isAuth, setIsAuth] = useState(false);
-    const dispatch = useDispatch();
 
-    // Загрузка данных пользователя при монтировании компонента
     useEffect(() => {
         fetchUserData();
     }, []);
 
-    // Функция для загрузки данных пользователя
     const fetchUserData = async () => {
         try {
             const response = await UserService.getUserData();
@@ -38,7 +33,6 @@ function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
         }
     };
 
-    // Функция для обработки изменений в форме
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUser({
@@ -47,10 +41,7 @@ function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
         });
     };
 
-    // Функция для выхода из профиля
     const handleLogout = async () => {
-        // dispatch(setAuth(false));
-        // dispatch(setUser(null));
         setUser(prevUser => ({
             ...prevUser,
             username: "",
@@ -59,7 +50,6 @@ function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
         await AuthService.logout();
     };
 
-    // Функция для отправки обновленных данных на сервер
     const handleSave = async () => {
         try {
             const response = await UserService.updateUserData(user.username, user.email);
@@ -75,15 +65,12 @@ function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
         }
     };
 
-    // Функция для уадления аккаунта
     const handleDeleteProfile = async () => {
         try {
-            const response = await UserServise.deleteUserProfile(user.username);
+            const response = await UserService.deleteUserProfile(user.username);
             if (response.status == 204) {
                 alert('Профиль успешно удален!');
                 await AuthService.logout();
-                dispatch(setAuth(false));
-                dispatch(setUser(null));
             } else {
                 alert('Ошибка при удалении профиля');
             }

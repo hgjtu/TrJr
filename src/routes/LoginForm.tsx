@@ -24,22 +24,6 @@ const LoginForm: FC = () => {
         }
     };
 
-    // const handleCheckAuth = async () => {
-        
-    // };
-
-    // const handleLogout = async () => {
-    //     try{
-    //         const response = await AuthService.logout();
-    //         localStorage.removeItem("token");
-    //         dispatch(setAuth(false));
-    //         dispatch(setUser(null));
-    //     }
-    //     catch (error:any){
-    //         console.log(error); //наверное так не стоит делать
-    //     }
-    // };
-
     return(
         <div>
             <div>

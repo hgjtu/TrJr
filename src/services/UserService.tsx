@@ -14,13 +14,4 @@ export default class UserService{
     static async deleteUserProfile(username:String): Promise <AxiosResponse<Response>>{
         return $api.delete<Response>(`/users/delete-user/${username}`);
     }
-
-    static async userMainPageAccess(): Promise <AxiosResponse<Response>>{
-        return $api.get<Response>(`/users`);
-    }
-
-    static async adminMainPageAccess(): Promise <AxiosResponse<Response>>{
-        return $api.get<Response>(`/admins`);
-    }
-
 }

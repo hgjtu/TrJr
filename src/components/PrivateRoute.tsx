@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setAuth, setUser, UserState } from '../reducers/userReducer';
@@ -29,14 +28,14 @@ const PrivateRoute = () => {
     }, []);
 
     if (isLoading) {
-        return <div>Loading...</div>; // Или спиннер
+        return <div>Loading...</div>; // добавить спинер
     }
 
     if (!isAuth) {
         return <Navigate to="/login" replace />;
     }
 
-    return <Outlet />; // Рендерит вложенные маршруты
+    return <Outlet />;
 };
 
 export default PrivateRoute;
