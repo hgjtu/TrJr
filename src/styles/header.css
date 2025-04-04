@@ -1,13 +1,130 @@
-.header{
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    padding: 20px;
-    background-color: #333;
-    color: white;
-    width: 100%;
+/* Fixed header styles */
+.app-header {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-}
+    height: 70px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .brand {
+    display: flex;
+    align-items: baseline;
+  }
+  
+  .logo-link {
+    text-decoration: none;
+  }
+  
+  .logo {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+  }
+  
+  .tagline {
+    margin: 0 0 0 15px;
+    color: #7f8c8d;
+    font-size: 14px;
+    position: relative;
+    padding-left: 15px;
+  }
+  
+  .tagline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
+    width: 1px;
+    background-color: #ddd;
+  }
+  
+  /* Navigation styles */
+  .main-nav {
+    display: flex;
+  }
+  
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+  
+  .nav-item {
+    margin-left: 20px;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #34495e;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.2s;
+  }
+  
+  .nav-link:hover {
+    color: #3498db;
+  }
+  
+  .nav-link.highlight {
+    color: #e74c3c;
+    font-weight: 600;
+  }
+  
+  .nav-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .nav-button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Active link indicator */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #3498db;
+    transition: width 0.3s;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Spacer for content */
+  .header-spacer {
+    height: 70px; /* Должно соответствовать высоте header */
+  }
