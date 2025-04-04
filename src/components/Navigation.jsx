@@ -10,7 +10,6 @@ function Navigation() {
         <li><Link to="/">Главная</Link></li>
         <li><Link to="/categories">Категории</Link></li>
         <li><Link to="/about">О нас</Link></li>
-        <li><Link to="/agreement">Соглашение</Link></li>
         <li><Link to="/user">Страница для пользователя</Link></li>
         <li><Link to="/admin">Страница для администратора</Link></li>
         <li>
