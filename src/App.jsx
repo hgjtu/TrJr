@@ -1,7 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { setAuth } from './reducers/userReducer';
-import { useEffect } from "react";
 import RoleGuard from './components/RoleGuard';
 import Header from './components/Header';
 import LoginForm from './routes/LoginForm';
@@ -11,7 +9,6 @@ import Home from './routes/Home';
 import About from './routes/About';
 import Categories from './routes/Categories';
 import Category from './routes/Category';
-import AgreementForm from './routes/AgreementForm';
 import Profile from './routes/Profile';
 import UserPage from './routes/UserPage';
 import AdminPage from './routes/AdminPage';
@@ -37,7 +34,6 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/category/:categoryCode?" element={<Category />} />
-          <Route path="/agreement" element={<AgreementForm />} />
 
           <Route path="/user" element={
             <RoleGuard requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
