@@ -10,9 +10,8 @@ function Header(){
         <div className="header-content">
           <div className="header-left">
             <Link to="/" className="logo-link">
-              <h1 className="logo">Путевые заметки</h1>
+              <Logo src="https://www.mirea.ru/upload/medialibrary/281/IIT_colour.jpg" />
             </Link>
-            <Logo src="https://www.mirea.ru/upload/medialibrary/281/IIT_colour.jpg" />
             <p className="tagline">Делитесь впечатлениями и вдохновляйтесь</p>
           </div>
         <Navigation />

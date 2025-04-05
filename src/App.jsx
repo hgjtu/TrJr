@@ -10,12 +10,11 @@ import RegisterForm from './routes/RegisterForm';
 import PrivateRoute from './components/PrivateRoute';
 import Home from './routes/Home';
 import About from './routes/About';
-import Categories from './routes/Categories';
-import Category from './routes/Category';
 import Profile from './routes/Profile';
 import UserPage from './routes/UserPage';
 import AdminPage from './routes/AdminPage';
 import PostPage from './routes/PostPage';
+import CreatePostPage from './routes/CreatePostPage';
 import NotFound from './routes/Errors';
 import './App.css';
 
@@ -53,14 +52,13 @@ function App() {
         <Route path="/login" element={!isAuth ? <LoginForm /> : <Navigate to="/" />} />
         <Route path="/register" element={!isAuth ? <RegisterForm /> : <Navigate to="/" />} />
         
-        <Route path="/categories" element={<Categories />} />
         <Route path="/about" element={<About />} />
 
         <Route path="/posts/:postId?" element={<PostPage />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
-          <Route path="/category/:categoryCode?" element={<Category />} />
+          <Route path="/create-post" element={<CreatePostPage />} />
 
           <Route path="/user" element={
             <RoleGuard requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>

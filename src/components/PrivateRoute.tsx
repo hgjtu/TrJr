@@ -18,7 +18,6 @@ const PrivateRoute = () => {
         AuthService.checkLogin()
             .then((response) => {
                 if (response.status === 200) {
-                    console.log(response);
                     dispatch(setAuth(true));
                     dispatch(setUser(response.data.user));
                 }

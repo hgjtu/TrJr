@@ -27,7 +27,7 @@ function Navigation() {
             {isAuth ? (
                 <>
                 <li className="nav-item">
-                    <Link to="/create" className="nav-link highlight">+ Создать</Link>
+                    <Link to="/create-post" className="nav-link highlight">+ Создать</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/profile">
