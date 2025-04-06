@@ -1,0 +1,59 @@
+.loading-spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .loading-spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: inherit;
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 10px;
+  }
+  
+  .spinner-small {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .spinner-medium {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .spinner-large {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .loading-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 8px;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Варианты цветов */
+  .spinner-primary {
+    border-top-color: #4CAF50;
+  }
+  
+  .spinner-secondary {
+    border-top-color: #2196F3;
+  }
+  
+  .spinner-dark {
+    border-top-color: #333;
+  }
+  
+  .spinner-light {
+    border-top-color: #f5f5f5;
+  }

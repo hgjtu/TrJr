@@ -8,10 +8,6 @@ import AuthService from "../services/AuthService";
 function Navigation() {
     const isAuth = useSelector((state) => state.user.isAuth);
 
-    const handleLogout = async () => {
-            await AuthService.logout();
-        };
-
     return (
         // {/* <li><Link to="/about">О нас</Link></li> */}
         // {/* <li><Link to="/user">Страница для пользователя</Link></li>
@@ -33,9 +29,6 @@ function Navigation() {
                     <Link to="/profile">
                         <img src={profileIcon} alt="Личный кабинет" style={{ width: '24px', height: '24px' }} />
                     </Link>
-                </li>
-                <li className="nav-item">
-                    <button onClick={handleLogout} className="nav-button">Выйти</button>
                 </li>
                 </>
             ) : (

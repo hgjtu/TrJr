@@ -2,164 +2,193 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import PostCard from '../components/PostCard';
 import SearchBar from '../components/SearchBar';
-import '../styles/home.css'
-
-// Моковые данные для постов о путешествиях
-const mockPosts = [
-  {
-    id: 1,
-    title: "Невероятные виды Санторини",
-    author: "Анна Петрова",
-    date: "2023-05-15",
-    location: "Санторини, Греция",
-    description: "Потрясающие закаты, белоснежные дома и синее море - Санторини превзошел все мои ожидания! Мы провели здесь 7 незабываемых дней, исследуя остров. Особенно запомнилась деревня Ия с ее знаменитыми закатами - каждый вечер сотни людей собираются на смотровых площадках, чтобы увидеть, как солнце медленно погружается в Эгейское море. Красные, оранжевые и розовые оттенки неба создают поистине волшебную атмосферу. Еще рекомендую посетить пляжи с черным и красным песком - такого больше нигде не увидишь!",
-    image: "https://example.com/santorini.jpg",
-    likes: 245,
-    isLiked: false,
-    tags: ["пляжный отдых", "романтика", "острова"]
-  },
-  {
-    id: 2,
-    title: "Поход в Гималаи",
-    author: "Иван Сидоров",
-    date: "2023-04-22",
-    location: "Непал",
-    description: "14 дней треккинга к базовому лагерю Эвереста. Незабываемые впечатления и испытание себя!",
-    likes: 189,
-    isLiked: true,
-  },
-  {
-    id: 3,
-    title: "Гастрономический тур по Италии",
-    author: "Мария Иванова",
-    date: "2023-06-10",
-    location: "Италия",
-    description: "От пиццы в Неаполе до пасты в Болонье - вкусное путешествие по лучшим регионам Италии.",
-    likes: 312,
-    isLiked: false,
-  },
-  {
-    id: 4,
-    title: "Дорогами Исландии",
-    author: "Дмитрий Козлов",
-    date: "2023-03-05",
-    location: "Исландия",
-    description: "Кольцевая дорога Исландии за 10 дней: водопады, гейзеры, ледники и северное сияние!",
-    image: "https://example.com/iceland.jpg",
-    likes: 278,
-    isLiked: false,
-  }
-];
+import Pagination from '../components/Pagination';
+import LoadingSpinner from '../components/LoadingSpinner';
+import PostService from "../services/PostService";
+import '../styles/home.css';
 
 const Home = () => {
-  const [posts, setPosts] = useState(mockPosts);
+  const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredPosts, setFilteredPosts] = useState(mockPosts);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const postsPerPage = 6;
 
-  // Фильтрация постов при изменении поискового запроса или активной вкладки
-  useEffect(() => {
-    let result = [...posts];
-    
-    // Применяем поиск
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(post => 
-        post.title.toLowerCase().includes(query) ||
-        post.description.toLowerCase().includes(query) ||
-        post.location.toLowerCase().includes(query) ||
-        post.author.toLowerCase().includes(query) ||
-        post.tags.some(tag => tag.toLowerCase().includes(query))
-    )}
-    
-    // Сортируем по активной вкладке
-    if (activeTab === 'popular') {
-      result.sort((a, b) => b.likes - a.likes);
-    } else {
-      result.sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Функция для загрузки постов из API
+  const fetchPosts = async (page = 0, sort = 'latest') => {
+    setIsLoading(true);
+    try {
+      const response = await PostService.getPostsData(page, postsPerPage, sort, searchQuery);
+      console.log(response);
+      if (response.status != 200) {
+        throw new Error('Не удалось загрузить посты');
+      }
+      
+      const data = await response.data;
+      setPosts(data.content);
+      setFilteredPosts(data.content);
+      setTotalPages(data.totalPages);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setFilteredPosts(result);
-  }, [searchQuery, activeTab, posts]);
+  };
+
+
+  // Загрузка постов при монтировании и изменении параметров
+  useEffect(() => {
+    fetchPosts(currentPage, activeTab);
+  }, [activeTab, searchQuery]);
 
   // Обработчик лайков
-  const handleLike = (postId) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        return {
-          ...post,
-          isLiked: !post.isLiked,
-          likes: post.isLiked ? post.likes - 1 : post.likes + 1
-        };
-      }
-      return post;
-    }));
+  const handleLike = async (postId) => {
+    try {
+      const response = await PostService.likePost(postId);
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            isLiked: !post.isLiked,
+            likes: post.isLiked ? post.likes - 1 : post.likes + 1
+          };
+        }
+        return post;
+      }));
+    } catch (err) {
+      console.error('Ошибка при обновлении лайка:', err);
+      // Откат изменений в случае ошибки
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            isLiked: !post.isLiked,
+            likes: post.isLiked ? post.likes - 1 : post.likes + 1
+          };
+        }
+        return post;
+      }));
+    }
   };
 
   // Обработчик поиска
   const handleSearch = (query) => {
     setSearchQuery(query);
+    setCurrentPage(0); // Сброс пагинации при новом поиске
   };
 
-  // Получаем рекомендуемые посты (просто берем 3 самых популярных)
+  // Обработчик смены страницы
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    fetchPosts(page, activeTab);
+  };
+
+  // Рекомендуемые посты
   const recommendedPosts = [...posts]
     .sort((a, b) => b.likes - a.likes)
     .slice(0, 3);
 
   return (
-    <div className="travel-feed">
-      <SearchBar onSearch={handleSearch} /> 
+    <div className="travel-feed-container">
+      <div className="hero-section">
+        <h1>Откройте для себя мир</h1>
+        <p>Вдохновляющие истории путешествий со всего света</p>
+        <SearchBar onSearch={handleSearch} />
+      </div>
 
-      <div className="main-content">
-        <div className="feed-section">
-          <div className="tabs">
-            <button 
-              className={activeTab === 'latest' ? 'active' : ''}
-              onClick={() => setActiveTab('latest')}
-            >
-              Последние
-            </button>
-            <button 
-              className={activeTab === 'popular' ? 'active' : ''}
-              onClick={() => setActiveTab('popular')}
-            >
-              Популярные
-            </button>
-          </div>
+      <div className="main-content-wrapper">
+        <div className="main-content">
+          <div className="feed-section">
+            <div className="tabs-container">
+              <div className="tabs">
+                <button 
+                  className={`tab-button ${activeTab === 'latest' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('latest')}
+                >
+                  Последние
+                </button>
+                <button 
+                  className={`tab-button ${activeTab === 'popular' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('popular')}
+                >
+                  Популярные
+                </button>
+              </div>
+              <div className="results-count">
+                {filteredPosts.length} из {postsPerPage * totalPages} записей
+              </div>
+            </div>
 
-          <div className="posts-grid">
-            {filteredPosts.length > 0 ? (
-              filteredPosts.map(post => (
-                <PostCard key={post.id} post={post} onLike={handleLike} />
-              ))
+            {isLoading ? (
+              <div className="loading-container">
+                <LoadingSpinner />
+              </div>
             ) : (
-              <div className="no-results">Ничего не найдено. Попробуйте изменить критерии поиска.</div>
+              <>
+                <div className="posts-grid">
+                  {filteredPosts.length > 0 ? (
+                    filteredPosts.map(post => (
+                      <PostCard key={post.id} post={post} onLike={handleLike} />
+                    ))
+                  ) : (
+                    <div className="no-results">
+                      <h3>Ничего не найдено</h3>
+                      <p>Попробуйте изменить критерии поиска</p>
+                    </div>
+                  )}
+                </div>
+
+                {filteredPosts.length > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                )}
+              </>
             )}
           </div>
-        </div>
 
-        <div className="sidebar">
-          <div className="recommendations">
-            <h3>Рекомендуем посетить</h3>
-            {recommendedPosts.map(post => (
-              <div key={post.id} className="recommended-post">
-                <img src={post.image} alt={post.title} />
-                <div>
-                  <h4>{post.title}</h4>
-                  <p>{post.location}</p>
-                </div>
+          <aside className="sidebar">
+            <div className="recommendations-card">
+              <h3 className="sidebar-title">Рекомендуем посетить</h3>
+              <div className="recommended-posts">
+                {recommendedPosts.map(post => (
+                  <div key={post.id} className="recommended-post">
+                    <div className="recommended-post-image" 
+                         style={{ backgroundImage: `url(${post.image || 'https://via.placeholder.com/150'})` }}>
+                      <div className="recommended-post-overlay">
+                        <h4>{post.title}</h4>
+                        <p className="location">{post.location}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          <div className="popular-tags">
-            <h3>Популярные теги</h3>
-            <div className="tags-container">
-              {['пляжный отдых', 'горы', 'городской туризм', 'роуд-трип', 'гастрономия', 'приключения'].map(tag => (
-                <span key={tag} className="tag">{tag}</span>
-              ))}
             </div>
-          </div>
+
+            <div className="popular-tags-card">
+              <h3 className="sidebar-title">Популярные теги</h3>
+              <div className="tags-container">
+                {['пляжный отдых', 'горы', 'городской туризм', 'роуд-трип', 'гастрономия', 'приключения', 'романтика', 'история'].map(tag => (
+                  <span key={tag} className="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="newsletter-card">
+              <h3 className="sidebar-title">Подпишитесь на обновления</h3>
+              <p>Получайте лучшие истории путешествий на почту</p>
+              <form className="newsletter-form">
+                <input type="email" placeholder="Ваш email" required />
+                <button type="submit">Подписаться</button>
+              </form>
+            </div>
+          </aside>
         </div>
       </div>
     </div>

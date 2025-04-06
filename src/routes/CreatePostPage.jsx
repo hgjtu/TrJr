@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import '../styles/postPage.css';
+import PostService from "../services/PostService";
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
+    const user = useSelector((state) => state.user.user);
+
     const [newPost, setNewPost] = useState({
       title: '',
       location: '',
       description: '',
-      image: '',
+      // image: '',
     //   tags: [],
-      author: currentUser,
-      date: new Date().toISOString(),
-      likes: 0,
-      isLiked: false
     });
   
     const handleInputChange = (e) => {
@@ -25,11 +25,15 @@ const CreatePostPage = () => {
       }));
     };
   
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      // В реальном приложении здесь был бы запрос к API для создания поста
-      alert('Пост создан!');
-      navigate('/');
+    const handleSubmit = async () => {
+      try {
+        const response = await PostService.createPost(newPost.title, newPost.location, newPost.description);
+        console.log("ДА БЛЯТЬ");
+        alert('Пост создан!');
+        navigate('/');
+      } catch (error) {
+        console.error('Ошибка при создании поста:', error);
+      }
     };
   
     return (
@@ -38,7 +42,7 @@ const CreatePostPage = () => {
         
         <h1>Создать новый пост</h1>
         
-        <form onSubmit={handleSubmit} className="create-post-form">
+        <form className="create-post-form">
           <div className="form-group">
             <label>Заголовок*</label>
             <input
@@ -72,7 +76,7 @@ const CreatePostPage = () => {
             />
           </div>
           
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Изображение (URL)</label>
             <input
               type="text"
@@ -80,9 +84,9 @@ const CreatePostPage = () => {
               value={newPost.image}
               onChange={handleInputChange}
             />
-          </div>
+          </div> */}
           
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Теги (через запятую)</label>
             <input
               type="text"
@@ -90,9 +94,9 @@ const CreatePostPage = () => {
               value={newPost.tags.join(',')}
               onChange={handleInputChange}
             />
-          </div>
+          </div> */}
           
-          <button type="submit" className="submit-button">Опубликовать</button>
+          <button onClick={handleSubmit} className="submit-button">Опубликовать</button>
         </form>
       </div>
     );

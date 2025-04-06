@@ -1,56 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import '../styles/postPage.css';
-
-const mockPosts = [
-  {
-    id: 1,
-    title: "Невероятные виды Санторини",
-    author: "Анна Петрова",
-    date: "2023-05-15",
-    location: "Санторини, Греция",
-    description: "Потрясающие закаты, белоснежные дома и синее море - Санторини превзошел все мои ожидания! Мы провели здесь 7 незабываемых дней, исследуя остров. Особенно запомнилась деревня Ия с ее знаменитыми закатами - каждый вечер сотни людей собираются на смотровых площадках, чтобы увидеть, как солнце медленно погружается в Эгейское море. Красные, оранжевые и розовые оттенки неба создают поистине волшебную атмосферу. Еще рекомендую посетить пляжи с черным и красным песком - такого больше нигде не увидишь!",
-    image: "https://example.com/santorini.jpg",
-    likes: 245,
-    isLiked: false,
-    tags: ["пляжный отдых", "романтика", "острова"]
-  },
-  {
-    id: 2,
-    title: "Поход в Гималаи",
-    author: "Иван Сидоров",
-    date: "2023-04-22",
-    location: "Непал",
-    description: "14 дней треккинга к базовому лагерю Эвереста. Незабываемые впечатления и испытание себя!",
-    likes: 189,
-    isLiked: true,
-  },
-  {
-    id: 3,
-    title: "Гастрономический тур по Италии",
-    author: "Мария Иванова",
-    date: "2023-06-10",
-    location: "Италия",
-    description: "От пиццы в Неаполе до пасты в Болонье - вкусное путешествие по лучшим регионам Италии.",
-    likes: 312,
-    isLiked: false,
-  },
-  {
-    id: 4,
-    title: "Дорогами Исландии",
-    author: "Дмитрий Козлов",
-    date: "2023-03-05",
-    location: "Исландия",
-    description: "Кольцевая дорога Исландии за 10 дней: водопады, гейзеры, ледники и северное сияние!",
-    image: "https://example.com/iceland.jpg",
-    likes: 278,
-    isLiked: false,
-  }
-];
-
-// Предполагаем, что текущий пользователь - это "Анна Петрова"
-const currentUser = "Анна Петрова";
+import PostService from "../services/PostService";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -58,14 +11,25 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedPost, setEditedPost] = useState({});
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    const foundPost = mockPosts.find(p => p.id === parseInt(postId));
-    setPost(foundPost);
-    if (foundPost) {
-      setEditedPost({ ...foundPost });
+    fetchPostData();
+  }, []);
+
+  const fetchPostData = async () => {
+    try {
+      const response = await PostService.getPostData(postId);
+      var foundPost = response.data;
+
+      setPost(foundPost);
+      if (foundPost) {
+        setEditedPost({ ...foundPost });
+      }
+    } catch (error) {
+        console.error('Ошибка при загрузке данных поста:', error);
     }
-  }, [postId]);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,26 +39,48 @@ const PostPage = () => {
     }));
   };
 
-  const handleSave = () => {
-    // В реальном приложении здесь был бы запрос к API для обновления поста
-    setPost(editedPost);
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      const response = await PostService.updatePostData(editedPost.id, editedPost.title,
+        editedPost.location, editedPost.description);
+      setPost(response.data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Ошибка при сохранении данных:', error);
+    }
   };
 
-  const handleDelete = () => {
-    // В реальном приложении здесь был бы запрос к API для удаления поста
-    alert('Пост удален!');
-    navigate('/');
+  const handleDelete = async () => {
+    try {
+      const response = await PostService.deletePost(postId);
+      alert('Пост удален!');
+      navigate('/');
+    } catch (error) {
+      console.error('Ошибка при удалении поста:', error);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await PostService.likePost(postId);
+      setPost(post => {
+          return {
+            ...post,
+            isLiked: !post.isLiked,
+            likes: response.data,
+          };
+      });
+    } catch (error) {
+      console.error('Ошибка при попытке лайка поста:', error);
+    }
   };
 
   if (!post) return <div className="loading">Загрузка...</div>;
 
-  const isAuthor = post.author === currentUser;
+  const isAuthor = post.author === user.username;
 
   return (
-    <div className="full-post">
-      <Link to="/" className="back-button">← Назад к ленте</Link>
-      
+    <div className="full-post">      
       {isAuthor && !isEditing && (
         <div className="post-actions">
           <button onClick={() => setIsEditing(true)} className="edit-button">Редактировать</button>
@@ -144,7 +130,7 @@ const PostPage = () => {
             />
           </div>
           
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Теги (через запятую)</label>
             <input
               type="text"
@@ -152,7 +138,7 @@ const PostPage = () => {
               value={editedPost.tags ? editedPost.tags.join(',') : ''}
               onChange={handleInputChange}
             />
-          </div>
+          </div> */}
           
           <div className="form-buttons">
             <button onClick={handleSave} className="save-button">Сохранить</button>
@@ -161,6 +147,7 @@ const PostPage = () => {
         </div>
       ) : (
         <>
+          <Link to="/" className="back-button">← Назад к ленте</Link>
           <div className="full-post-image-container">
             {post.image && <img src={post.image} alt={post.title} />}
             <div className="full-post-location">{post.location}</div>
@@ -179,16 +166,16 @@ const PostPage = () => {
               ))}
             </div>
             
-            {post.tags && (
+            {/* {post.tags && (
               <div className="full-post-tags">
                 {post.tags.map(tag => (
                   <span key={tag} className="tag">{tag}</span>
                 ))}
               </div>
-            )}
+            )} */}
             
             <div className="full-post-actions">
-              <button className={`like-button ${post.isLiked ? 'liked' : ''}`}>
+              <button onClick={handleLike} className={`like-button ${post.isLiked ? 'liked' : ''}`}>
                 ❤️ {post.likes}
               </button>
             </div>
