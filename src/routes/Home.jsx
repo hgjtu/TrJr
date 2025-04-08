@@ -49,8 +49,13 @@ const Home = () => {
 
   // Обработчик поиска
   const handleSearch = (query) => {
-    setSearchQuery(query);
-    setCurrentPage(0); // Сброс пагинации при новом поиске
+    const searchParams = [];
+    if (query.title) searchParams.push(`title=${encodeURIComponent(query.title)}`);
+    if (query.author) searchParams.push(`author=${encodeURIComponent(query.author)}`);
+    if (query.date) searchParams.push(`date=${encodeURIComponent(query.date)}`);
+    
+    setSearchQuery(searchParams.join('&'));
+    setCurrentPage(1); // Сброс пагинации при новом поиске
   };
 
   // Обработчик смены страницы

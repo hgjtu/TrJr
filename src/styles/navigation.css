@@ -1,115 +1,156 @@
-/* Header Styles */
-.app-header {
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 15px 0;
+/* Navigation Styles */
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0 20px;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.nav-brand .brand-link {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4CAF50;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-link:hover {
+  background-color: #f5f5f5;
+  color: #4CAF50;
+}
+
+.nav-link.highlight {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.nav-link.highlight:hover {
+  background-color: #3e8e41;
+}
+
+.nav-button {
+  text-decoration: none;
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  background-color: #3e8e41;
+  transform: translateY(-2px);
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.profile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.profile-link:hover .profile-icon {
+  border-color: #4CAF50;
+  transform: scale(1.1);
+}
+
+.profile-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  margin-top: 5px;
+}
+
+.profile-link:hover .profile-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.link-icon {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-menu {
+      gap: 10px;
   }
   
-  .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .nav-link, .nav-button {
+      padding: 8px 12px;
+      font-size: 0.9rem;
   }
   
-  .header-left {
-    display: flex;
-    align-items: center;
+  .link-text {
+      display: none;
   }
   
-  .logo-link {
-    text-decoration: none;
-    color: #2c3e50;
+  .link-icon {
+      font-size: 1.3rem;
   }
   
-  .logo {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
+  .profile-tooltip {
+      display: none;
   }
-  
-  .tagline {
-    margin: 0 0 0 15px;
-    color: #7f8c8d;
-    font-size: 14px;
-    position: relative;
-    padding-left: 15px;
-  }
-  
-  .tagline::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 60%;
-    width: 1px;
-    background-color: #ddd;
-  }
-  
-  .nav-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-  }
-  
-  .nav-item {
-    margin-left: 20px;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: #34495e;
-    font-weight: 500;
-    font-size: 16px;
-    transition: color 0.2s;
-    padding: 5px 0;
-    position: relative;
-  }
-  
-  .nav-link:hover {
-    color: #3498db;
-  }
-  
-  .nav-link.highlight {
-    color: #e74c3c;
-    font-weight: 600;
-  }
-  
-  .nav-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .nav-button:hover {
-    background-color: #2980b9;
-  }
-  
-  /* Active link indicator */
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #3498db;
-    transition: width 0.3s;
-  }
-  
-  .nav-link:hover::after {
-    width: 100%;
-  }
+}

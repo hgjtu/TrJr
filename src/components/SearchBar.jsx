@@ -1,24 +1,79 @@
 import React, { useState } from "react";
+import "../styles/searchBar.css";
 
-// Компонент поиска
 const SearchBar = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
+  const [author, setAuthor] = useState('');
+  const [title, setTitle] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(query);
+    const searchQuery = {
+      author: author.trim(),
+      title: title.trim(),
+      startDate: startDate.trim(),
+      endDate: endDate.trim()
+    };
+    onSearch(searchQuery);
   };
 
   return (
     <form className="search-bar" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Поиск по местам, тегам или авторам..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <button type="submit">Найти</button>
+      <div className="search-fields">
+        <div className="text-fields">
+          <div className="search-field">
+            <label htmlFor="title">Название</label>
+            <input
+              id="title"
+              type="text"
+              placeholder="Поиск по названию..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          
+          <div className="search-field">
+            <label htmlFor="author">Автор</label>
+            <input
+              id="author"
+              type="text"
+              placeholder="Поиск по автору..."
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            />
+          </div>
+        </div>
+        
+        <div className="date-range-fields">
+          <div className="search-field">
+            <label htmlFor="startDate">Дата от</label>
+            <input
+              id="startDate"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+          
+          <div className="search-field">
+            <label htmlFor="endDate">Дата до</label>
+            <input
+              id="endDate"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              min={startDate}
+            />
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit" className="search-button">
+        Найти
+      </button>
     </form>
   );
 };
+
 export default React.memo(SearchBar);
