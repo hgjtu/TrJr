@@ -14,20 +14,14 @@ function Navigation() {
         // <li><Link to="/admin">Страница для администратора</Link></li> */}
         <nav className="header-nav">
         <ul className="nav-list">
-            <li className="nav-item">
-                <Link to="/" className="nav-link">Лента</Link>
-            </li>
-            <li className="nav-item">
-                <Link to="/popular" className="nav-link">Популярное</Link>
-            </li>
             {isAuth ? (
                 <>
                 <li className="nav-item">
-                    <Link to="/create-post" className="nav-link highlight">+ Создать</Link>
+                    <Link to="/create-post" className="nav-link highlight">Создать запись</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/profile">
-                        <img src={profileIcon} alt="Личный кабинет" style={{ width: '24px', height: '24px' }} />
+                        <img src={profileIcon} alt="Личный кабинет" style={{ width: '30px', height: '30px' }} />
                     </Link>
                 </li>
                 </>

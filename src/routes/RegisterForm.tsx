@@ -2,6 +2,8 @@ import React, { FC, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { UserState, setAuth, setUser } from '../reducers/userReducer';
 import AuthService from "../services/AuthService";
+import { Link } from "react-router-dom";
+import "../styles/registerForm.css";
 
 const RegisterForm: FC = () => {
     const [username, setUsername] = useState<string>("");
@@ -25,28 +27,33 @@ const RegisterForm: FC = () => {
     };
 
     return(
-        <div>
-            <input
-                onChange={e => setUsername(e.target.value)}
-                value={username}
-                type="text"
-                placeholder="Username"
-            />
-            <input
-                onChange={e => setEmail(e.target.value)}
-                value={email}
-                type="email"
-                placeholder="Email"
-            />
-            <input
-                onChange={e => setPassword(e.target.value)}
-                value={password}
-                type="password"
-                placeholder="Password"
-            />
-            <button onClick={handleRegistration}>Регистрация</button>
+        <div className="register-form-container">
+          <h2 className="register-title">Создать аккаунт</h2>
+          <input
+            className="register-input"
+            onChange={e => setUsername(e.target.value)}
+            value={username}
+            type="text"
+            placeholder="Имя пользователя"
+          />
+          <input
+            className="register-input"
+            onChange={e => setEmail(e.target.value)}
+            value={email}
+            type="email"
+            placeholder="Email"
+          />
+          <input
+            className="register-input"
+            onChange={e => setPassword(e.target.value)}
+            value={password}
+            type="password"
+            placeholder="Пароль"
+          />
+          <button className="register-button" onClick={handleRegistration}>Зарегистрироваться</button>
+          <Link className="login-link" to="/login">Уже есть аккаунт? Войти</Link>
         </div>
-    )
+      )
 };
 
 export default RegisterForm;

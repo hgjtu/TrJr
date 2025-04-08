@@ -13,15 +13,15 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const postsPerPage = 6;
 
   // Функция для загрузки постов из API
-  const fetchPosts = async (page = 0, sort = 'latest') => {
+  const fetchPosts = async (page = 1, sort = 'latest') => {
     setIsLoading(true);
     try {
-      const response = await PostService.getPostsData(page, postsPerPage, sort, searchQuery);
+      const response = await PostService.getPostsData(page - 1, postsPerPage, sort, searchQuery);
       console.log(response);
       if (response.status != 200) {
         throw new Error('Не удалось загрузить посты');
@@ -44,36 +44,6 @@ const Home = () => {
   useEffect(() => {
     fetchPosts(currentPage, activeTab);
   }, [activeTab, searchQuery]);
-
-  // Обработчик лайков
-  const handleLike = async (postId) => {
-    try {
-      const response = await PostService.likePost(postId);
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            isLiked: !post.isLiked,
-            likes: post.isLiked ? post.likes - 1 : post.likes + 1
-          };
-        }
-        return post;
-      }));
-    } catch (err) {
-      console.error('Ошибка при обновлении лайка:', err);
-      // Откат изменений в случае ошибки
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            isLiked: !post.isLiked,
-            likes: post.isLiked ? post.likes - 1 : post.likes + 1
-          };
-        }
-        return post;
-      }));
-    }
-  };
 
   // Обработчик поиска
   const handleSearch = (query) => {
@@ -112,15 +82,21 @@ const Home = () => {
                   Последние
                 </button>
                 <button 
-                  className={`tab-button ${activeTab === 'popular' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('popular')}
+                  className={`tab-button ${activeTab === 'subscriptions' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('subscriptions')}
                 >
-                  Популярные
+                  Подписки
+                </button>
+                <button 
+                  className={`tab-button ${activeTab === 'my-posts' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('my-posts')}
+                >
+                  Мои записи
                 </button>
               </div>
-              <div className="results-count">
-                {filteredPosts.length} из {postsPerPage * totalPages} записей
-              </div>
+              {/* <div className="results-count">
+                {filteredPosts.length} из {posts.length} записей
+              </div> */}
             </div>
 
             {isLoading ? (
@@ -132,7 +108,7 @@ const Home = () => {
                 <div className="posts-grid">
                   {filteredPosts.length > 0 ? (
                     filteredPosts.map(post => (
-                      <PostCard key={post.id} post={post} onLike={handleLike} />
+                      <PostCard key={post.id} post={post}/>
                     ))
                   ) : (
                     <div className="no-results">
@@ -169,24 +145,6 @@ const Home = () => {
                   </div>
                 ))}
               </div>
-            </div>
-
-            <div className="popular-tags-card">
-              <h3 className="sidebar-title">Популярные теги</h3>
-              <div className="tags-container">
-                {['пляжный отдых', 'горы', 'городской туризм', 'роуд-трип', 'гастрономия', 'приключения', 'романтика', 'история'].map(tag => (
-                  <span key={tag} className="tag">{tag}</span>
-                ))}
-              </div>
-            </div>
-
-            <div className="newsletter-card">
-              <h3 className="sidebar-title">Подпишитесь на обновления</h3>
-              <p>Получайте лучшие истории путешествий на почту</p>
-              <form className="newsletter-form">
-                <input type="email" placeholder="Ваш email" required />
-                <button type="submit">Подписаться</button>
-              </form>
             </div>
           </aside>
         </div>

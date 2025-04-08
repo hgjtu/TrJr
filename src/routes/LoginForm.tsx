@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { UserState, setAuth, setUser } from '../reducers/userReducer';
 import AuthService from "../services/AuthService";
 import { Link } from "react-router-dom";
+import "../styles/loginForm.css";
 
 const LoginForm: FC = () => {
     const [username, setUsername] = useState<string>("");
@@ -25,23 +26,24 @@ const LoginForm: FC = () => {
     };
 
     return(
-        <div>
-            <div>
-            <input
-                onChange={e => setUsername(e.target.value)}
-                value={username}
-                type="text"
-                placeholder="Username"
-            />
-            <input
-                onChange={e => setPassword(e.target.value)}
-                value={password}
-                type="password"
-                placeholder="Password"
-            />
-            <button onClick={handleLogin}>Логин</button>
-            </div>
-            <Link to="/register">Создать аккаунт</Link>
+        <div className="login-form-container">
+          <h2 className="login-title">Вход в аккаунт</h2>
+          <input
+            className="login-input"
+            onChange={e => setUsername(e.target.value)}
+            value={username}
+            type="text"
+            placeholder="Имя пользователя"
+          />
+          <input
+            className="login-input"
+            onChange={e => setPassword(e.target.value)}
+            value={password}
+            type="password"
+            placeholder="Пароль"
+          />
+          <button className="login-button" onClick={handleLogin}>Войти</button>
+          <Link className="register-link" to="/register">Создать аккаунт</Link>
         </div>
     )
 };

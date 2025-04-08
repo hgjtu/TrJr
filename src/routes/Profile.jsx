@@ -65,83 +65,60 @@ function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
         }
     };
 
-    const handleDeleteProfile = async () => {
-        try {
-            const response = await UserService.deleteUserProfile(user.username);
-            if (response.status == 204) {
-                alert('Профиль успешно удален!');
-                await AuthService.logout();
-            } else {
-                alert('Ошибка при удалении профиля');
-            }
-        } catch (error) {
-            console.error('Ошибка при удалении профиля:', error);
-        }
-    };
-
     return (
         <div className="user-profile">
-            <h1>Личный кабинет</h1>
-            <div className="profile-info">
-                <div className="profile-picture">
-                    {/* <img src={user.profilePicture || 'https://via.placeholder.com/150'} alt="Фото профиля" /> */}
-                    <img src={profileIcon} alt="Фото профиля" />
-                </div>
-                {isEditing ? (
-                    <form>
-                        <label>
-                            Имя:
-                            <input
-                                type="text"
-                                name="username"
-                                value={user.username}
-                                readOnly
-                                disabled
-                            />
-                        </label>
-                        <label>
-                            Email:
-                            <input
-                                type="email"
-                                name="email"
-                                value={user.email}
-                                onChange={handleInputChange}
-                            />
-                        </label>
-                        {/* <label>
-                            Фото профиля (URL):
-                            <input
-                                type="text"
-                                name="profilePicture"
-                                value={user.profilePicture}
-                                onChange={handleInputChange}
-                            />
-                        </label> */}
-                        <button type="button" onClick={handleSave}>
-                            Сохранить
-                        </button>
-                        <button type="button" onClick={() => setIsEditing(false)}>
-                            Отмена
-                        </button>
-                    </form>
-                ) : (
-                    <div className="profile-details">
-                        <p><strong>Логин:</strong> {user.username}</p>
-                        <p><strong>Email:</strong> {user.email}</p>
-                        <button type="button" onClick={() => setIsEditing(true)}>
-                            Редактировать профиль
-                        </button>
-                        <button type="button" onClick={handleLogout}>
-                            Выйти
-                        </button>
-                        <button type="button" onClick={handleDeleteProfile}>
-                            Удалить аккаунт
-                        </button>
-                    </div>
-                )}
+          <h1>Личный кабинет</h1>
+          <div className="profile-info">
+            <div className="profile-picture">
+              <img src={profileIcon} alt="Фото профиля" />
             </div>
+            {isEditing ? (
+              <form>
+                <label>
+                  Имя:
+                  <input
+                    type="text"
+                    name="username"
+                    value={user.username}
+                    readOnly
+                    disabled
+                  />
+                </label>
+                <label>
+                  Email:
+                  <input
+                    type="email"
+                    name="email"
+                    value={user.email}
+                    onChange={handleInputChange}
+                  />
+                </label>
+                <div className="button-group">
+                  <button type="button" className="button-primary" onClick={handleSave}>
+                    Сохранить
+                  </button>
+                  <button type="button" className="button-secondary" onClick={() => setIsEditing(false)}>
+                    Отмена
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <div className="profile-details">
+                <p><strong>Логин:</strong> {user.username}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <div className="button-group">
+                  <button type="button" className="button-primary" onClick={() => setIsEditing(true)}>
+                    Редактировать
+                  </button>
+                  <button type="button" className="button-secondary" onClick={handleLogout}>
+                    Выйти
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-    );
+      );
 }
 
 export default Profile;

@@ -1,104 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import '../styles/postPage.css';
 import PostService from "../services/PostService";
+import "../styles/createPostPage.css";
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
 
     const [newPost, setNewPost] = useState({
-      title: '',
-      location: '',
-      description: '',
-      // image: '',
-    //   tags: [],
+        title: '',
+        location: '',
+        description: '',
     });
-  
+
     const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setNewPost(prev => ({
-        ...prev,
-        [name]: name === 'tags' ? value.split(',') : value
-      }));
+        const { name, value } = e.target;
+        setNewPost(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
-  
-    const handleSubmit = async () => {
-      try {
-        const response = await PostService.createPost(newPost.title, newPost.location, newPost.description);
-        console.log("ДА БЛЯТЬ");
-        alert('Пост создан!');
-        navigate('/');
-      } catch (error) {
-        console.error('Ошибка при создании поста:', error);
-      }
+
+    const handleCreate = async () => {
+        try {
+            await PostService.createPost(newPost.title, newPost.location, newPost.description);
+            alert('Пост успешно создан!');
+            navigate('/');
+        } catch (error) {
+            console.error('Ошибка при создании поста:', error);
+            alert('Произошла ошибка при создании поста');
+        }
     };
-  
+
     return (
-      <div className="create-post-page">
-        <Link to="/" className="back-button">← Назад к ленте</Link>
-        
-        <h1>Создать новый пост</h1>
-        
-        <form className="create-post-form">
-          <div className="form-group">
-            <label>Заголовок*</label>
+        <div className="create-post-container">
+            <h2 className="create-post-title">Создать новый пост</h2>
+            
             <input
-              type="text"
-              name="title"
-              value={newPost.title}
-              onChange={handleInputChange}
-              required
+                className="create-post-input"
+                name="title"
+                value={newPost.title}
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Заголовок*"
+                required
             />
-          </div>
-          
-          <div className="form-group">
-            <label>Местоположение*</label>
+            
             <input
-              type="text"
-              name="location"
-              value={newPost.location}
-              onChange={handleInputChange}
-              required
+                className="create-post-input"
+                name="location"
+                value={newPost.location}
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Местоположение*"
+                required
             />
-          </div>
-          
-          <div className="form-group">
-            <label>Описание*</label>
+            
             <textarea
-              name="description"
-              value={newPost.description}
-              onChange={handleInputChange}
-              rows="5"
-              required
+                className="create-post-textarea"
+                name="description"
+                value={newPost.description}
+                onChange={handleInputChange}
+                placeholder="Описание*"
+                rows={5}
+                required
             />
-          </div>
-          
-          {/* <div className="form-group">
-            <label>Изображение (URL)</label>
-            <input
-              type="text"
-              name="image"
-              value={newPost.image}
-              onChange={handleInputChange}
-            />
-          </div> */}
-          
-          {/* <div className="form-group">
-            <label>Теги (через запятую)</label>
-            <input
-              type="text"
-              name="tags"
-              value={newPost.tags.join(',')}
-              onChange={handleInputChange}
-            />
-          </div> */}
-          
-          <button onClick={handleSubmit} className="submit-button">Опубликовать</button>
-        </form>
-      </div>
+            
+            <button 
+                className="create-post-button" 
+                onClick={handleCreate}
+                disabled={!newPost.title || !newPost.location || !newPost.description}
+            >
+                Опубликовать
+            </button>
+            
+            <Link className="back-link" to="/">← Вернуться к ленте</Link>
+        </div>
     );
-  };
-export default React.memo(CreatePostPage); 
+};
+
+export default React.memo(CreatePostPage);

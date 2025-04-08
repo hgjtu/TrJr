@@ -1,0 +1,87 @@
+/* Login Form Container */
+.login-form-container {
+    max-width: 400px;
+    margin: 100px auto 0;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form Title */
+  .login-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  /* Input Fields */
+  .login-input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s;
+    box-sizing: border-box;
+  }
+  
+  .login-input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+  }
+  
+  /* Login Button */
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 20px;
+  }
+  
+  .login-button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Register Link */
+  .register-link {
+    display: block;
+    text-align: center;
+    color: #7f8c8d;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  
+  .register-link:hover {
+    color: #3498db;
+    text-decoration: underline;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .login-form-container {
+      margin: 80px 15px 0;
+      padding: 20px;
+    }
+  }
+  

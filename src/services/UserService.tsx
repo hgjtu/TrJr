@@ -10,8 +10,4 @@ export default class UserService{
     static async updateUserData(username:String, email:String): Promise <AxiosResponse<UserResponse>>{
         return $api.put<UserResponse>("/users/update-user-data", {username, email});
     }
-
-    static async deleteUserProfile(username:String): Promise <AxiosResponse<Response>>{
-        return $api.delete<Response>(`/users/delete-user/${username}`);
-    }
 }
