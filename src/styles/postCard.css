@@ -1,0 +1,141 @@
+/* Post Card Container */
+.post-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    margin-bottom: 25px;
+  }
+  
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Post Link */
+  .post-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Image Container */
+  .post-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .post-card:hover .post-image {
+    transform: scale(1.05);
+  }
+  
+  .post-location {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  /* Post Content */
+  .post-content {
+    padding: 20px;
+    padding-bottom: 15px; /* Уменьшаем отступ снизу */
+  }
+  
+  .post-title {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    line-height: 1.3;
+  }
+  
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+  
+  .post-author {
+    font-weight: 500;
+    color: #3498db;
+  }
+  
+  .post-date {
+    color: #95a5a6;
+  }
+  
+  .post-description {
+    margin: 0;
+    color: #34495e;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+  
+  /* Post Likes */
+  .post-likes {
+    padding: 0 20px 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+  
+  .likes-text {
+    color: #95a5a6;
+  }
+  
+  .likes-count {
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .post-image-container {
+      height: 180px;
+    }
+    
+    .post-content {
+      padding: 15px;
+      padding-bottom: 10px;
+    }
+    
+    .post-title {
+      font-size: 18px;
+    }
+    
+    .post-likes {
+      padding: 0 15px 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .post-image-container {
+      height: 160px;
+    }
+    
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+  }

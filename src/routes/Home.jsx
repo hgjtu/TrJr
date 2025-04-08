@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PostCard from '../components/PostCard';
 import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
@@ -17,6 +17,8 @@ const Home = () => {
   const [totalPages, setTotalPages] = useState(1);
   const postsPerPage = 6;
 
+  const elementRef = useRef(null);
+  
   // Функция для загрузки постов из API
   const fetchPosts = async (page = 1, sort = 'latest') => {
     setIsLoading(true);
@@ -53,6 +55,7 @@ const Home = () => {
 
   // Обработчик смены страницы
   const handlePageChange = (page) => {
+    elementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setCurrentPage(page);
     fetchPosts(page, activeTab);
   };
@@ -69,7 +72,7 @@ const Home = () => {
         <p>Вдохновляющие истории путешествий со всего света</p>
         <SearchBar onSearch={handleSearch} />
       </div>
-
+      <div ref={elementRef}></div>
       <div className="main-content-wrapper">
         <div className="main-content">
           <div className="feed-section">
