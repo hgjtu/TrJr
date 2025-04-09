@@ -20,14 +20,13 @@ const PostPage = () => {
   const fetchPostData = async () => {
     try {
       const response = await PostService.getPostData(postId);
-      var foundPost = response.data;
-
+      const foundPost = response.data;
       setPost(foundPost);
       if (foundPost) {
         setEditedPost({ ...foundPost });
       }
     } catch (error) {
-        console.error('Ошибка при загрузке данных поста:', error);
+      console.error('Ошибка при загрузке данных поста:', error);
     }
   };
 
@@ -41,8 +40,12 @@ const PostPage = () => {
 
   const handleSave = async () => {
     try {
-      const response = await PostService.updatePostData(editedPost.id, editedPost.title,
-        editedPost.location, editedPost.description);
+      const response = await PostService.updatePostData(
+        editedPost.id, 
+        editedPost.title,
+        editedPost.location, 
+        editedPost.description
+      );
       setPost(response.data);
       setIsEditing(false);
     } catch (error) {
@@ -52,7 +55,7 @@ const PostPage = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await PostService.deletePost(postId);
+      await PostService.deletePost(postId);
       alert('Пост удален!');
       navigate('/');
     } catch (error) {
@@ -63,13 +66,11 @@ const PostPage = () => {
   const handleLike = async () => {
     try {
       const response = await PostService.likePost(postId);
-      setPost(post => {
-          return {
-            ...post,
-            isLiked: !post.isLiked,
-            likes: response.data,
-          };
-      });
+      setPost(post => ({
+        ...post,
+        isLiked: !post.isLiked,
+        likes: response.data,
+      }));
     } catch (error) {
       console.error('Ошибка при попытке лайка поста:', error);
     }
@@ -80,16 +81,18 @@ const PostPage = () => {
   const isAuthor = post.author === user.username;
 
   return (
-    <div className="full-post">      
+    <div className="post-container">
       {isAuthor && !isEditing && (
         <div className="post-actions">
-          <button onClick={() => setIsEditing(true)} className="edit-button">Редактировать</button>
-          <button onClick={handleDelete} className="delete-button">Удалить</button>
+          <button onClick={() => setIsEditing(true)} className="btn-edit">Редактировать</button>
+          <button onClick={handleDelete} className="btn-delete">Удалить</button>
         </div>
       )}
       
       {isEditing ? (
-        <div className="edit-post-form">
+        <div className="edit-form">
+          <h2>Редактировать пост</h2>
+          
           <div className="form-group">
             <label>Заголовок</label>
             <input
@@ -120,63 +123,40 @@ const PostPage = () => {
             />
           </div>
           
-          <div className="form-group">
-            <label>Изображение (URL)</label>
-            <input
-              type="text"
-              name="image"
-              value={editedPost.image || ''}
-              onChange={handleInputChange}
-            />
-          </div>
-          
-          {/* <div className="form-group">
-            <label>Теги (через запятую)</label>
-            <input
-              type="text"
-              name="tags"
-              value={editedPost.tags ? editedPost.tags.join(',') : ''}
-              onChange={handleInputChange}
-            />
-          </div> */}
-          
           <div className="form-buttons">
-            <button onClick={handleSave} className="save-button">Сохранить</button>
-            <button onClick={() => setIsEditing(false)} className="cancel-button">Отмена</button>
+            <button onClick={handleSave} className="btn-save">Сохранить</button>
+            <button onClick={() => setIsEditing(false)} className="btn-cancel">Отмена</button>
           </div>
         </div>
       ) : (
         <>
-          <Link to="/" className="back-button">← Назад к ленте</Link>
-          <div className="full-post-image-container">
+          <Link to="/" className="back-link">← Назад</Link>
+          
+          <div className="post-image-wrapper">
             {post.image && <img src={post.image} alt={post.title} />}
-            <div className="full-post-location">{post.location}</div>
+            <div className="post-location">{post.location}</div>
           </div>
           
-          <div className="full-post-content">
+          <div className="post-content">
             <h1>{post.title}</h1>
-            <div className="full-post-meta">
-              <span className="author">{post.author}</span>
-              <span className="date">{new Date(post.date).toLocaleDateString()}</span>
+            
+            <div className="post-meta">
+              <span>Автор: {post.author}</span>
+              <span>{new Date(post.date).toLocaleDateString()}</span>
             </div>
             
-            <div className="full-post-text">
+            <div className="post-text">
               {post.description.split('\n').map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
             </div>
             
-            {/* {post.tags && (
-              <div className="full-post-tags">
-                {post.tags.map(tag => (
-                  <span key={tag} className="tag">{tag}</span>
-                ))}
-              </div>
-            )} */}
-            
-            <div className="full-post-actions">
-              <button onClick={handleLike} className={`like-button ${post.isLiked ? 'liked' : ''}`}>
-                ❤️ {post.likes}
+            <div className="post-footer">
+              <button 
+                onClick={handleLike} 
+                className={`btn-like ${post.isLiked ? 'active' : ''}`}
+              >
+                Нравится ({post.likes})
               </button>
             </div>
           </div>
