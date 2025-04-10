@@ -89,12 +89,12 @@ const Home = () => {
                 >
                   Последние
                 </button>
-                <button 
+                {/* <button 
                   className={`tab-button ${activeTab === 'subscriptions' ? 'active' : ''}`}
                   onClick={() => setActiveTab('subscriptions')}
                 >
                   Подписки
-                </button>
+                </button> */}
                 <button 
                   className={`tab-button ${activeTab === 'my-posts' ? 'active' : ''}`}
                   onClick={() => setActiveTab('my-posts')}

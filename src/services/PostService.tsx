@@ -5,12 +5,16 @@ import { PostResponse } from "../models/response/PostResponse";
 export default class PostService{    
     static async createPost(title: String, location: String, description: String, image?: File): Promise <AxiosResponse<PostResponse>>{
         const formData = new FormData();
-        formData.append('post', JSON.stringify({ "title": title, "location": location, "description": description }));
+        formData.append('post', new Blob([JSON.stringify({
+            title,
+            location,
+            description
+        })], { type: "application/json" }));
         
         if (image) {
             formData.append('image', image);
         }
-
+    
         return $api.post<PostResponse>('/posts/create-post', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -22,8 +26,13 @@ export default class PostService{
     }
     static async updatePostData(id: String, title: String, location: String, description: String, image?: File): Promise <AxiosResponse<PostResponse>>{
         const formData = new FormData();
-        formData.append('post', JSON.stringify({ "id": id, "title": title, "location": location, "description": description }));
-        
+        formData.append('post', new Blob([JSON.stringify({
+            id, 
+            title,
+            location,
+            description
+        })], { type: "application/json" }));
+
         if (image) {
             formData.append('image', image);
         }
