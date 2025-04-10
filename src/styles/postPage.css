@@ -155,3 +155,46 @@
 .form-buttons {
   margin-top: 20px;
 }
+
+.edit-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.edit-form {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.image-preview-container {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.image-preview-wrapper {
+  margin-top: 15px;
+  border: 1px dashed #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.no-image {
+  color: #999;
+  text-align: center;
+  padding: 20px;
+}

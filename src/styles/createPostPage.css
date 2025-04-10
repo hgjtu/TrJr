@@ -102,3 +102,119 @@
         padding: 20px;
     }
 }
+
+/* Create Post Wrapper */
+.create-post-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+
+/* Create Post Container */
+.create-post-container {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.create-post-content {
+    display: flex;
+    gap: 30px;
+}
+
+.create-post-form {
+    flex: 1;
+}
+
+.image-preview-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.image-preview-container {
+    flex: 1;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 300px;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.no-image-placeholder {
+    color: #95a5a6;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Image Upload */
+.image-upload-container {
+    margin-bottom: 20px;
+}
+
+.image-upload-label {
+    display: block;
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.image-upload-label:hover {
+    background-color: #e8f4fc;
+    border-color: #3498db;
+    color: #3498db;
+}
+
+.image-upload-input {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .create-post-content {
+        flex-direction: column;
+    }
+    
+    .image-preview-section {
+        margin-top: 20px;
+    }
+    
+    .create-post-container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .create-post-container {
+        margin: 15px;
+        padding: 15px;
+    }
+}

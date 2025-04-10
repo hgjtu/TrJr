@@ -7,7 +7,18 @@ export default class UserService{
         return $api.get<UserResponse>("/users/get-user-data");
     }
 
-    static async updateUserData(username:String, email:String): Promise <AxiosResponse<UserResponse>>{
-        return $api.put<UserResponse>("/users/update-user-data", {username, email});
+    static async updateUserData(username:String, email:String, image?: File): Promise <AxiosResponse<UserResponse>>{
+        const formData = new FormData();
+        formData.append('post', JSON.stringify({ "username": username, "email": email }));
+        
+        if (image) {
+            formData.append('image', image);
+        }
+
+        return $api.put<UserResponse>('/users/update-user-data', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     }
 }

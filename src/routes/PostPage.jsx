@@ -11,6 +11,8 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedPost, setEditedPost] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
@@ -24,6 +26,7 @@ const PostPage = () => {
       setPost(foundPost);
       if (foundPost) {
         setEditedPost({ ...foundPost });
+        setImagePreview(foundPost.image);
       }
     } catch (error) {
       console.error('Ошибка при загрузке данных поста:', error);
@@ -38,16 +41,35 @@ const PostPage = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = async () => {
     try {
+      const formData = new FormData();
+      formData.append('title', editedPost.title);
+      formData.append('location', editedPost.location);
+      formData.append('description', editedPost.description);
+      if (selectedImage) {
+        formData.append('image', selectedImage);
+      }
+
       const response = await PostService.updatePostData(
         editedPost.id, 
-        editedPost.title,
-        editedPost.location, 
-        editedPost.description
+        formData
       );
       setPost(response.data);
       setIsEditing(false);
+      setSelectedImage(null);
     } catch (error) {
       console.error('Ошибка при сохранении данных:', error);
     }
@@ -90,42 +112,64 @@ const PostPage = () => {
       )}
       
       {isEditing ? (
-        <div className="edit-form">
-          <h2>Редактировать пост</h2>
-          
-          <div className="form-group">
-            <label>Заголовок</label>
-            <input
-              type="text"
-              name="title"
-              value={editedPost.title}
-              onChange={handleInputChange}
-            />
+        <div className="edit-container">
+          <div className="edit-form">
+            <h2>Редактировать пост</h2>
+            
+            <div className="form-group">
+              <label>Заголовок</label>
+              <input
+                type="text"
+                name="title"
+                value={editedPost.title}
+                onChange={handleInputChange}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Местоположение</label>
+              <input
+                type="text"
+                name="location"
+                value={editedPost.location}
+                onChange={handleInputChange}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Описание</label>
+              <textarea
+                name="description"
+                value={editedPost.description}
+                onChange={handleInputChange}
+                rows="5"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Изображение</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </div>
+            
+            <div className="form-buttons">
+              <button onClick={handleSave} className="btn-save">Сохранить</button>
+              <button onClick={() => setIsEditing(false)} className="btn-cancel">Отмена</button>
+            </div>
           </div>
           
-          <div className="form-group">
-            <label>Местоположение</label>
-            <input
-              type="text"
-              name="location"
-              value={editedPost.location}
-              onChange={handleInputChange}
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Описание</label>
-            <textarea
-              name="description"
-              value={editedPost.description}
-              onChange={handleInputChange}
-              rows="5"
-            />
-          </div>
-          
-          <div className="form-buttons">
-            <button onClick={handleSave} className="btn-save">Сохранить</button>
-            <button onClick={() => setIsEditing(false)} className="btn-cancel">Отмена</button>
+          <div className="image-preview-container">
+            <h3>Предпросмотр изображения</h3>
+            <div className="image-preview-wrapper">
+              {imagePreview ? (
+                <img src={imagePreview} alt="Предпросмотр" className="image-preview" />
+              ) : (
+                <div className="no-image">Нет изображения</div>
+              )}
+            </div>
           </div>
         </div>
       ) : (
