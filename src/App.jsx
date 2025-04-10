@@ -27,12 +27,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-      AuthService.checkLogin()
+      AuthService.checkSession()
           .then((response) => {
               if (response.status === 200) {
                   console.log(response);
                   dispatch(setAuth(true));
-                  dispatch(setUser(response.data.user));
+                  dispatch(setUser(response.data));
               }
           })
           .catch(() => dispatch(setAuth(false)), dispatch(setUser(null)))

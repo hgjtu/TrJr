@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { PostResponse } from "../models/response/PostResponse";
 
 export default class PostService{    
-    static async createPost(title: String, location: String, description: String): Promise <AxiosResponse<PostResponse>>{
+    static async createPost(title: String, location: String, description: String, image?: File): Promise <AxiosResponse<PostResponse>>{
         return $api.post<PostResponse>('/posts/create-post', {"title": title, "location": location, "description": description});
     }
     static async getPostData(postID: String): Promise <AxiosResponse<PostResponse>>{
