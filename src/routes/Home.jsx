@@ -24,7 +24,6 @@ const Home = () => {
     setIsLoading(true);
     try {
       const response = await PostService.getPostsData(page - 1, postsPerPage, sort, searchQuery);
-      console.log(response);
       if (response.status != 200) {
         throw new Error('Не удалось загрузить посты');
       }

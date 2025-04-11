@@ -23,10 +23,11 @@ const PostPage = () => {
     try {
       const response = await PostService.getPostData(postId);
       const foundPost = response.data;
+
       setPost(foundPost);
       if (foundPost) {
         setEditedPost({ ...foundPost });
-        setImagePreview(foundPost.image);
+        setImagePreview(foundPost.imageUrl);
       }
     } catch (error) {
       console.error('Ошибка при загрузке данных поста:', error);
@@ -55,17 +56,12 @@ const PostPage = () => {
 
   const handleSave = async () => {
     try {
-      const formData = new FormData();
-      formData.append('title', editedPost.title);
-      formData.append('location', editedPost.location);
-      formData.append('description', editedPost.description);
-      if (selectedImage) {
-        formData.append('image', selectedImage);
-      }
-
       const response = await PostService.updatePostData(
         editedPost.id, 
-        formData
+        editedPost.title,
+        editedPost.location,
+        editedPost.description,
+        selectedImage
       );
       setPost(response.data);
       setIsEditing(false);
@@ -101,6 +97,7 @@ const PostPage = () => {
   if (!post) return <div className="loading">Загрузка...</div>;
 
   const isAuthor = post.author === user.username;
+  console.log(post.imageUrl);
 
   return (
     <div className="post-container">
@@ -177,7 +174,7 @@ const PostPage = () => {
           <Link to="/" className="back-link">← Назад</Link>
           
           <div className="post-image-wrapper">
-            {post.image && <img src={post.image} alt={post.title} />}
+            {post.imageUrl && <img src={post.imageUrl} alt={post.title} />}
             <div className="post-location">{post.location}</div>
           </div>
           

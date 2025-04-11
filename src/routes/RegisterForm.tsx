@@ -22,7 +22,7 @@ const RegisterForm: FC = () => {
             dispatch(setUser(response.data.user));
         }
         catch (error:any){
-            console.log(error); //наверное так не стоит делать
+            console.error(error); //наверное так не стоит делать
         }
     };
 

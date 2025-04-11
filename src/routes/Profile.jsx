@@ -27,7 +27,6 @@ function Profile() { //НУЖНЫ ПРОВЕРКИ НА ОШИБКИ
                 email: response.data.email,
             }));
             
-            console.log(user)
         } catch (error) {
             console.error('Ошибка при загрузке данных пользователя:', error);
         }
