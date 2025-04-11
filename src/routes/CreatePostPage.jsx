@@ -38,15 +38,7 @@ const CreatePostPage = () => {
 
     const handleCreate = async () => {
         try {
-            const formData = new FormData();
-            formData.append('title', newPost.title);
-            formData.append('location', newPost.location);
-            formData.append('description', newPost.description);
-            if (selectedImage) {
-                formData.append('image', selectedImage);
-            }
-
-            await PostService.createPost(formData);
+            await PostService.createPost(newPost.title, newPost.location, newPost.description, selectedImage);
             alert('Пост успешно создан!');
             navigate('/');
         } catch (error) {

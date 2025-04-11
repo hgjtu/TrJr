@@ -12,11 +12,7 @@ export default class AuthService{
     }
 
     static async checkSession(): Promise <AxiosResponse<Response>>{
-        return $api.get<Response>("/users/check-session", {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        });
+        return $api.get<Response>("/users/check-session");
     }
 
     static async logout(): Promise <void>{
