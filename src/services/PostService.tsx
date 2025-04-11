@@ -5,11 +5,23 @@ import { PostResponse } from "../models/response/PostResponse";
 export default class PostService{    
     static async createPost(title: String, location: String, description: String, image?: File): Promise <AxiosResponse<PostResponse>>{
         const formData = new FormData();
-        formData.append('post', new Blob([JSON.stringify({
+        const postBlob = new Blob([JSON.stringify({
             title,
             location,
             description
-        })], { type: "application/json" }));
+        })], { type: 'application/json' });
+        
+        formData.append('post', postBlob);
+        
+        // formData.append('post', JSON.stringify({
+        //     title,
+        //     location,
+        //     description
+        // }));
+
+        // formData.append('image', new Blob([JSON.stringify({
+        //     image
+        // })], { type: "multipart/form-data" }));
         
         if (image) {
             formData.append('image', image);
@@ -17,7 +29,8 @@ export default class PostService{
     
         return $api.post<PostResponse>('/posts/create-post', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         });
     }
