@@ -3,8 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import '../styles/postPage.css';
+import "../styles/createPostPage.css";
 import PostService from "../services/PostService";
-import ImageService from "../services/ImageService";
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -14,6 +15,7 @@ const PostPage = () => {
   const [editedPost, setEditedPost] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
@@ -25,18 +27,12 @@ const PostPage = () => {
       const response = await PostService.getPostData(postId);
       const foundPost = response.data;
 
-      console.log();
-
-      const image = await ImageService.getImage(foundPost.imageName);
-      const url = URL.createObjectURL(image.data);
-
-      console.log(image);
+      console.log(foundPost);
 
       setPost(foundPost);
       if (foundPost) {
-        foundPost.imageUrl = url;
         setEditedPost({ ...foundPost });
-        setImagePreview(url);
+        setImagePreview(foundPost.image);
       }
       
     } catch (error) {
@@ -81,14 +77,24 @@ const PostPage = () => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteConfirm = async () => {
     try {
       await PostService.deletePost(postId);
+      setShowDeleteModal(false);
       alert('Пост удален!');
       navigate('/');
     } catch (error) {
       console.error('Ошибка при удалении поста:', error);
+      setShowDeleteModal(false);
     }
+  };
+
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
   };
 
   const handleLike = async () => {
@@ -104,87 +110,137 @@ const PostPage = () => {
     }
   };
 
-  if (!post) return <div className="loading">Загрузка...</div>;
+  if (!post) return <LoadingSpinner />;
 
   const isAuthor = post.author === user.username;
-  console.log(post);
 
   return (
     <div className="post-container">
+      {showDeleteModal && (
+        <div className="modal-overlay">
+          <div className="delete-modal">
+            <h3>Подтверждение удаления</h3>
+            <p>Вы уверены, что хотите удалить этот пост? Это действие нельзя отменить.</p>
+            <div className="modal-buttons">
+              <button 
+                onClick={handleDeleteCancel}
+                className="modal-button cancel-button"
+              >
+                Отмена
+              </button>
+              <button 
+                onClick={handleDeleteConfirm}
+                className="modal-button delete-button"
+              >
+                Удалить
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {isAuthor && !isEditing && (
         <div className="post-actions">
           <button onClick={() => setIsEditing(true)} className="btn-edit">Редактировать</button>
-          <button onClick={handleDelete} className="btn-delete">Удалить</button>
+          <button onClick={handleDeleteClick} className="btn-delete">Удалить</button>
         </div>
       )}
       
-      {isEditing ? (
-        <div className="edit-container">
-          <div className="edit-form">
-            <h2>Редактировать пост</h2>
-            
-            <div className="form-group">
-              <label>Заголовок</label>
-              <input
-                type="text"
-                name="title"
-                value={editedPost.title}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label>Местоположение</label>
-              <input
-                type="text"
-                name="location"
-                value={editedPost.location}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label>Описание</label>
-              <textarea
-                name="description"
-                value={editedPost.description}
-                onChange={handleInputChange}
-                rows="5"
-              />
-            </div>
-            
-            <div className="form-group">
-              <label>Изображение</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </div>
-            
-            <div className="form-buttons">
-              <button onClick={handleSave} className="btn-save">Сохранить</button>
-              <button onClick={() => setIsEditing(false)} className="btn-cancel">Отмена</button>
+        {isEditing ? (
+          <div className="create-post-wrapper">
+            <div className="create-post-container">
+              <h2 className="create-post-title">Редактировать пост</h2>
+              
+              <div className="create-post-content">
+                <div className="create-post-form">
+                  <input
+                    className="create-post-input"
+                    name="title"
+                    value={editedPost.title}
+                    onChange={handleInputChange}
+                    type="text"
+                    placeholder="Заголовок*"
+                    required
+                  />
+                  
+                  <input
+                    className="create-post-input"
+                    name="location"
+                    value={editedPost.location}
+                    onChange={handleInputChange}
+                    type="text"
+                    placeholder="Местоположение*"
+                    required
+                  />
+                  
+                  <textarea
+                    className="create-post-textarea"
+                    name="description"
+                    value={editedPost.description}
+                    onChange={handleInputChange}
+                    placeholder="Описание*"
+                    rows={5}
+                    required
+                  />
+                  
+                  <div className="image-upload-container">
+                    <label className="image-upload-label">
+                      Загрузить новое изображение
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="image-upload-input"
+                      />
+                    </label>
+                  </div>
+                  
+                  <div className="form-buttons" style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      className="create-post-button" 
+                      onClick={handleSave}
+                      disabled={!editedPost.title || !editedPost.location || !editedPost.description}
+                      style={{ flex: 1 }}
+                    >
+                      Сохранить
+                    </button>
+                    
+                    <button 
+                      className="create-post-button" 
+                      onClick={() => setIsEditing(false)}
+                      style={{ 
+                        flex: 1,
+                        backgroundColor: '#f5f5f5',
+                        color: '#333',
+                        border: '1px solid #e0e0e0'
+                      }}
+                    >
+                      Отмена
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="image-preview-section">
+                  <h3 className="preview-title">Предпросмотр изображения</h3>
+                  <div className="image-preview-container">
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Предпросмотр" className="preview-image" />
+                    ) : (
+                      <div className="no-image-placeholder">
+                        Изображение не выбрано
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div className="image-preview-container">
-            <h3>Предпросмотр изображения</h3>
-            <div className="image-preview-wrapper">
-              {imagePreview ? (
-                <img src={imagePreview} alt="Предпросмотр" className="image-preview" />
-              ) : (
-                <div className="no-image">Нет изображения</div>
-              )}
-            </div>
-          </div>
-        </div>
-      ) : (
+        ) : (
         <>
           <Link to="/" className="back-link">← Назад</Link>
           
           <div className="post-image-wrapper">
-            {post.imageUrl && <img src={post.imageUrl} alt={post.title} />}
+            {post.image && <img src={post.image} alt={post.title} />}
             <div className="post-location">{post.location}</div>
           </div>
           

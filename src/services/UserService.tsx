@@ -7,9 +7,17 @@ export default class UserService{
         return $api.get<UserResponse>("/users/get-user-data");
     }
 
+    static async resetUserImage(): Promise <AxiosResponse<UserResponse>>{
+        return $api.post<UserResponse>("/users/reset-user-image");
+    }
+
     static async updateUserData(username:String, email:String, image?: File): Promise <AxiosResponse<UserResponse>>{
         const formData = new FormData();
-        formData.append('post', JSON.stringify({ "username": username, "email": email }));
+
+        formData.append('user', new Blob([JSON.stringify({
+            username,
+            email,
+        })], { type: 'application/json' }));
         
         if (image) {
             formData.append('image', image);

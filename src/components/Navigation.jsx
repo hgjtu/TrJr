@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import '../styles/navigation.css';
-import profileIcon from '../assets/react.svg';
+import defaultProfileIcon from '../assets/default-user-img.png';
 
 function Navigation() {
     const isAuth = useSelector((state) => state.user.isAuth);
+    const userImage = useSelector((state) => state.user.user?.image);
+
 
     return (
         <nav className="navbar">
@@ -25,7 +27,7 @@ function Navigation() {
                             <li className="nav-item">
                                 <Link to="/profile" className="profile-link">
                                     <img 
-                                        src={profileIcon} 
+                                        src={userImage || defaultProfileIcon} 
                                         alt="Личный кабинет" 
                                         className="profile-icon" 
                                     />

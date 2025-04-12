@@ -23,22 +23,22 @@ const SearchBar = ({ onSearch }) => {
       <div className="search-fields">
         <div className="text-fields">
           <div className="search-field">
-            <label htmlFor="title">Название</label>
+            <label htmlFor="title">Автор</label>
             <input
               id="title"
               type="text"
-              placeholder="Поиск по названию..."
+              placeholder="Поиск по автору..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
           
           <div className="search-field">
-            <label htmlFor="author">Автор</label>
+            <label htmlFor="author">Место</label>
             <input
               id="author"
               type="text"
-              placeholder="Поиск по автору..."
+              placeholder="Поиск по месту..."
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
             />

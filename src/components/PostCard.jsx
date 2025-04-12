@@ -15,10 +15,7 @@ const PostCard = ({ post }) => {
             <img 
               src={post.image} 
               alt={post.title} 
-              className="post-image" 
-              onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
-              }}
+              className="post-image"
             />
           )}
           <div className="post-location">{post.location}</div>

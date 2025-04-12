@@ -143,7 +143,7 @@ const Home = () => {
                 {recommendedPosts.map(post => (
                   <div key={post.id} className="recommended-post">
                     <div className="recommended-post-image" 
-                         style={{ backgroundImage: `url(${post.image || 'https://via.placeholder.com/150'})` }}>
+                         style={{ backgroundImage: `url(${post.image})` }}>
                       <div className="recommended-post-overlay">
                         <h4>{post.title}</h4>
                         <p className="location">{post.location}</p>
