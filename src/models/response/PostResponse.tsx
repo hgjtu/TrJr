@@ -5,7 +5,7 @@ export interface PostResponse {
     date: string;
     location: string;
     description: string;
-    imageUrl: string;
+    imageName: string;
     likes: Number;
     isLiked: Boolean;
 }

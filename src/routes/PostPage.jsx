@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import '../styles/postPage.css';
 import PostService from "../services/PostService";
+import ImageService from "../services/ImageService";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -24,11 +25,20 @@ const PostPage = () => {
       const response = await PostService.getPostData(postId);
       const foundPost = response.data;
 
+      console.log();
+
+      const image = await ImageService.getImage(foundPost.imageName);
+      const url = URL.createObjectURL(image.data);
+
+      console.log(image);
+
       setPost(foundPost);
       if (foundPost) {
+        foundPost.imageUrl = url;
         setEditedPost({ ...foundPost });
-        setImagePreview(foundPost.imageUrl);
+        setImagePreview(url);
       }
+      
     } catch (error) {
       console.error('Ошибка при загрузке данных поста:', error);
     }
@@ -97,7 +107,7 @@ const PostPage = () => {
   if (!post) return <div className="loading">Загрузка...</div>;
 
   const isAuthor = post.author === user.username;
-  console.log(post.imageUrl);
+  console.log(post);
 
   return (
     <div className="post-container">
