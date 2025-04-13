@@ -72,9 +72,14 @@ const Home = () => {
   return (
     <div className="travel-feed-container">
       <div className="hero-section">
-        <h1>Откройте для себя мир</h1>
-        <p>Вдохновляющие истории путешествий со всего света</p>
-        <SearchBar onSearch={handleSearch} />
+        <div className="hero-content">
+          <h1 className="hero-title">Откройте для себя мир</h1>
+          <p className="hero-subtitle">Вдохновляющие истории путешествий со всего света</p>
+          <SearchBar onSearch={handleSearch} />
+        </div>
+        <div className="hero-scroll-indicator">
+          <div className="scroll-arrow"></div>
+        </div>
       </div>
       <div ref={elementRef}></div>
       <div className="main-content-wrapper">

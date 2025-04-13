@@ -1,30 +1,17 @@
-/* Search Bar Styles */
 .search-bar {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-.search-fields {
-    display: flex;
-    flex-direction: column;
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    margin-bottom: 20px;
-}
-
-.text-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.date-range-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    margin-bottom: 25px;
 }
 
 .search-field {
@@ -33,13 +20,64 @@
 }
 
 .search-field label {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #555;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: 500;
 }
 
 .search-field input {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
+}
+
+.search-field input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+    background: #fff;
+}
+
+.date-range-field .react-datepicker-wrapper {
+    width: 100%;
+}
+
+.date-range-field .react-datepicker__input-container {
+    width: 100%;
+}
+
+.date-range-field .date-picker-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
+}
+
+.date-range-field .date-picker-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+    background: #fff;
+}
+
+.date-range-field .react-datepicker-wrapper {
+    width: 100%;
+}
+
+.date-range-field .react-datepicker__input-container {
+    width: 100%;
+}
+
+.date-range-field .date-picker-input {
+    width: 100%;
+    box-sizing: border-box; /* Это важно для правильного расчета ширины с учетом padding */
     padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -47,37 +85,56 @@
     transition: all 0.3s ease;
 }
 
-.search-field input:focus {
-    border-color: #4CAF50;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-}
-
 .search-button {
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 12px 25px;
-    border-radius: 6px;
-    font-size: 1rem;
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .search-button:hover {
     background-color: #3e8e41;
     transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .text-fields, .date-range-fields {
+/* Для экранов 900-1200px */
+@media (max-width: 1200px) {
+    .search-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Для экранов 600-900px */
+@media (max-width: 900px) {
+    .search-bar {
+        padding: 25px;
+    }
+    
+    .search-grid {
+        gap: 15px;
+    }
+}
+
+/* Для экранов до 600px */
+@media (max-width: 700px) {
+    .search-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .search-bar {
-        padding: 20px;
+        padding: 20px 15px;
+    }
+    
+    .search-button {
+        padding: 13px 20px;
     }
 }

@@ -1,71 +1,78 @@
 import React, { useState } from "react";
 import "../styles/searchBar.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const SearchBar = ({ onSearch }) => {
   const [author, setAuthor] = useState('');
   const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [location, setLocation] = useState('');
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const searchQuery = {
       author: author.trim(),
       title: title.trim(),
-      startDate: startDate.trim(),
-      endDate: endDate.trim()
+      location: location.trim(),
+      startDate: startDate ? startDate.toISOString().split('T')[0] : '',
+      endDate: endDate ? endDate.toISOString().split('T')[0] : ''
     };
     onSearch(searchQuery);
   };
 
   return (
     <form className="search-bar" onSubmit={handleSubmit}>
-      <div className="search-fields">
-        <div className="text-fields">
-          <div className="search-field">
-            <label htmlFor="title">Автор</label>
-            <input
-              id="title"
-              type="text"
-              placeholder="Поиск по автору..."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          
-          <div className="search-field">
-            <label htmlFor="author">Место</label>
-            <input
-              id="author"
-              type="text"
-              placeholder="Поиск по месту..."
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </div>
+      <div className="search-grid">
+        <div className="search-field">
+          <label htmlFor="author">Автор</label>
+          <input
+            id="author"
+            type="text"
+            placeholder="Поиск по автору..."
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+          />
         </div>
         
-        <div className="date-range-fields">
-          <div className="search-field">
-            <label htmlFor="startDate">Дата от</label>
-            <input
-              id="startDate"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </div>
-          
-          <div className="search-field">
-            <label htmlFor="endDate">Дата до</label>
-            <input
-              id="endDate"
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              min={startDate}
-            />
-          </div>
+        <div className="search-field">
+          <label htmlFor="title">Название</label>
+          <input
+            id="title"
+            type="text"
+            placeholder="Поиск по названию..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        
+        <div className="search-field">
+          <label htmlFor="location">Место</label>
+          <input
+            id="location"
+            type="text"
+            placeholder="Поиск по месту..."
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </div>
+        
+        <div className="search-field date-range-field">
+          <label>Дата публикации (от - до)</label>
+          <DatePicker
+            selectsRange={true}
+            startDate={startDate}
+            endDate={endDate}
+            onChange={(update) => {
+              setDateRange(update);
+            }}
+            isClearable={true}
+            placeholderText="Выберите диапазон дат"
+            dateFormat="dd.MM.yyyy"
+            maxDate={new Date()}
+            className="date-picker-input"
+          />
         </div>
       </div>
       

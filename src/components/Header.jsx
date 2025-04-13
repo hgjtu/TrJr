@@ -12,9 +12,11 @@ function Header() {
                     <div className="header-brand">
                         <Link to="/" className="logo-link">
                             <Logo src="https://www.mirea.ru/upload/medialibrary/281/IIT_colour.jpg" />
-                            <span className="brand-name">TravelFeed</span>
+                            <div className="brand-text">
+                                <span className="brand-name">TravelFeed</span>
+                                <p className="tagline">Делитесь впечатлениями и вдохновляйтесь</p>
+                            </div>
                         </Link>
-                        <p className="tagline">Делитесь впечатлениями и вдохновляйтесь</p>
                     </div>
                     <Navigation />
                 </div>
