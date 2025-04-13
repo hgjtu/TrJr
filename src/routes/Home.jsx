@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
@@ -9,6 +10,7 @@ import '../styles/home.css';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [recommendedPosts, setRecommendedPosts] = useState([]);
   const [activeTab, setActiveTab] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -20,11 +22,11 @@ const Home = () => {
   const elementRef = useRef(null);
   
   // Функция для загрузки постов из API
-  const fetchPosts = async (page = 1, sort = 'latest') => {
+  const fetchPosts = async (page = 1, sort = 'latest', search = searchQuery) => {
     setIsLoading(true);
     try {
-      const response = await PostService.getPostsData(page - 1, postsPerPage, sort, searchQuery);
-      if (response.status != 200) {
+      const response = await PostService.getPostsData(page - 1, postsPerPage, sort, search);
+      if (response.status !== 200) {
         throw new Error('Не удалось загрузить посты');
       }
       
@@ -40,21 +42,44 @@ const Home = () => {
     }
   };
 
+  // Функция для загрузки постов из API
+  const fetchRecommendedPosts = async () => {
+    setIsLoading(true);
+    try {
+      const response = await PostService.getRecommendedPosts();
+      if (response.status !== 200) {
+        throw new Error('Не удалось загрузить посты');
+      }
+      
+      const data = await response.data;
+      setRecommendedPosts(data.content);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
   // Загрузка постов при монтировании и изменении параметров
   useEffect(() => {
-    fetchPosts(currentPage, activeTab);
-  }, [activeTab, searchQuery]);
+    fetchPosts(currentPage, activeTab, searchQuery);
+    fetchRecommendedPosts();
+  }, [activeTab]); // Убрали searchQuery из зависимостей, так как теперь обрабатываем его в handleSearch
 
   // Обработчик поиска
   const handleSearch = (query) => {
     const searchParams = [];
-    if (query.title) searchParams.push(`title=${encodeURIComponent(query.title)}`);
     if (query.author) searchParams.push(`author=${encodeURIComponent(query.author)}`);
-    if (query.date) searchParams.push(`date=${encodeURIComponent(query.date)}`);
+    if (query.title) searchParams.push(`title=${encodeURIComponent(query.title)}`);
+    if (query.location) searchParams.push(`location=${encodeURIComponent(query.location)}`);
+    if (query.startDate) searchParams.push(`startDate=${encodeURIComponent(query.startDate)}`);
+    if (query.endDate) searchParams.push(`endDate=${encodeURIComponent(query.endDate)}`);
     
-    setSearchQuery(searchParams.join('&'));
+    const newSearchQuery = searchParams.join('&');
+    setSearchQuery(newSearchQuery);
     setCurrentPage(1); // Сброс пагинации при новом поиске
+    
+    // Немедленный вызов fetchPosts с новыми параметрами
+    fetchPosts(1, activeTab, newSearchQuery);
   };
 
   // Обработчик смены страницы
@@ -63,11 +88,6 @@ const Home = () => {
     setCurrentPage(page);
     fetchPosts(page, activeTab);
   };
-
-  // Рекомендуемые посты
-  const recommendedPosts = [...posts]
-    .sort((a, b) => b.likes - a.likes)
-    .slice(0, 3);
 
   return (
     <div className="travel-feed-container">
@@ -146,15 +166,18 @@ const Home = () => {
               <h3 className="sidebar-title">Рекомендуем посетить</h3>
               <div className="recommended-posts">
                 {recommendedPosts.map(post => (
-                  <div key={post.id} className="recommended-post">
-                    <div className="recommended-post-image" 
-                         style={{ backgroundImage: `url(${post.image})` }}>
-                      <div className="recommended-post-overlay">
-                        <h4>{post.title}</h4>
-                        <p className="location">{post.location}</p>
+                  <Link to={`/posts/${post.id}`}>
+                    <div key={post.id} className="recommended-post">
+                      <div className="recommended-post-image" 
+                          style={{ backgroundImage: `url(${post.image})` }}>
+                        <div className="recommended-post-overlay">
+                          <h4>{post.title}</h4>
+                          <p className="location">{post.location}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
+                  
                 ))}
               </div>
             </div>

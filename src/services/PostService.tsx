@@ -53,4 +53,8 @@ export default class PostService{
     static async getPostsData(page: String, postsPerPage: String, sort: String, searchQuery: String): Promise <AxiosResponse<Response>>{
         return $api.get<Response>(`/posts/get-posts-data?page=${page}&limit=${postsPerPage}&sort=${sort}&search=${searchQuery}`);
     }
+    static async getRecommendedPosts(): Promise <AxiosResponse<Response>>{
+        return $api.get<Response>(`/posts/get-recommended-posts-data`);
+    }
+    
 }
