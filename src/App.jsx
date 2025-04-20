@@ -13,6 +13,7 @@ import About from './routes/About';
 import Profile from './routes/Profile';
 import UserPage from './routes/UserPage';
 import AdminPage from './routes/AdminPage';
+import ModeratorPage from "./routes/ModeratorPage";
 import PostPage from './routes/PostPage';
 import CreatePostPage from './routes/CreatePostPage';
 import NotFound from './routes/Errors';
@@ -72,6 +73,12 @@ function App() {
             </RoleGuard>
           } />
         </Route>
+
+        <Route path="/moderator" element={
+            <RoleGuard requiredRoles={['ROLE_ADMIN', 'ROLE_MODERATOR']}>
+              <ModeratorPage />
+            </RoleGuard>
+          } />
 
         <Route path="*" element={<NotFound />} />
         

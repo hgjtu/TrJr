@@ -8,4 +8,5 @@ export interface PostResponse {
     imageName: string;
     likes: Number;
     isLiked: Boolean;
+    status: string;
 }

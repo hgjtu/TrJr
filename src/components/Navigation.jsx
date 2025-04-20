@@ -9,6 +9,9 @@ function Navigation() {
     const isAuth = useSelector((state) => state.user.isAuth);
     const userImage = useSelector((state) => state.user.user?.image);
 
+    const isAdmin = (useSelector((state) => state.user.user?.role) === "ROLE_MODERATOR"
+                    || useSelector((state) => state.user.user?.role) === "ROLE_ADMIN");
+
     const handleLogout = async () => {
             await AuthService.logout();
         };
@@ -18,6 +21,13 @@ function Navigation() {
             <ul className="nav-menu">
                 {isAuth ? (
                     <>
+                        {isAdmin && (
+                            <li className="nav-item">
+                                <Link to="/moderator" className="nav-link admin-link">
+                                    <span className="link-text">Панель администратора</span>
+                                </Link>
+                            </li>
+                        )}
                         <li className="nav-item">
                             <Link to="/create-post" className="nav-link highlight">
                                 <span className="link-icon">+</span>
