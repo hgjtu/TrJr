@@ -237,7 +237,7 @@ const PostPage = () => {
           </div>
         ) : (
         <>
-          <Link to="/" className="back-link">← Назад</Link>
+          <button onClick={() => navigate(-1)} className="back-link">← Назад</button>
           
           <div className="post-image-wrapper">
             {post.image && <img src={post.image} alt={post.title} />}

@@ -24,7 +24,7 @@ function Navigation() {
                         {isAdmin && (
                             <li className="nav-item">
                                 <Link to="/moderator" className="nav-link admin-link">
-                                    <span className="link-text">Панель администратора</span>
+                                    <span className="link-text">Панель модератора</span>
                                 </Link>
                             </li>
                         )}
