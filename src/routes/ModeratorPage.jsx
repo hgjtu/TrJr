@@ -8,23 +8,17 @@ import '../styles/moderatorPage.css';
 const ModeratorPage = () => {
   const [pendingPosts, setPendingPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [hasMorePosts, setHasMorePosts] = useState(true);
-  const postsPerPage = 6;
 
   // Загрузка постов, ожидающих модерации
-  const fetchPendingPosts = async (page = 0) => {
+  const fetchPendingPosts = async () => {
     setIsLoading(true);
     try {
       const response = await PostService.getModeratorData("");
       if (response.status !== 200) {
         throw new Error('Не удалось загрузить посты для модерации');
       }
-      
-      const data = await response.data;
-      setPendingPosts(prev => [...prev, ...data.content]);
-      setHasMorePosts(!data.last);
-      setCurrentPage(page);
+
+      setPendingPosts(response.data.content);
     } catch (error) {
       console.error(error);
     } finally {
@@ -43,13 +37,8 @@ const ModeratorPage = () => {
     }
   };
 
-  // Загрузка дополнительных постов
-  const loadMorePosts = () => {
-    fetchPendingPosts(currentPage + 1);
-  };
-
   useEffect(() => {
-    fetchPendingPosts(0);
+    fetchPendingPosts();
   }, []);
 
   if (isLoading && pendingPosts.length === 0) return <LoadingSpinner />;
@@ -92,18 +81,6 @@ const ModeratorPage = () => {
               </div>
             ))}
           </div>
-          
-          {hasMorePosts && (
-            <div className="load-more-container">
-              <button
-                onClick={loadMorePosts}
-                disabled={isLoading}
-                className="load-more-button"
-              >
-                {isLoading ? 'Загрузка...' : 'Загрузить еще'}
-              </button>
-            </div>
-          )}
         </>
       ) : (
         <div className="no-pending-posts">
@@ -112,7 +89,7 @@ const ModeratorPage = () => {
             onClick={() => fetchPendingPosts(0)}
             className="load-more-button"
           >
-            Проверить снова
+            Проверить наличие постов для модерации
           </button>
         </div>
       )}
