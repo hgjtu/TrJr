@@ -8,7 +8,13 @@ const PostCard = ({ post }) => {
     : post.description;
 
   return (
-    <div className="post-card">
+    <div className={`post-card ${post.status === 'STATUS_DENIED' ? 'denied' : ''}`}>
+      {post.status === 'STATUS_DENIED' && (
+        <div className="post-denied-banner">
+          Отклонено
+        </div>
+      )}
+      
       <Link to={`/posts/${post.id}`} className="post-link">
         <div className="post-image-container">
           {post.image && (
@@ -16,6 +22,7 @@ const PostCard = ({ post }) => {
               src={post.image} 
               alt={post.title} 
               className="post-image"
+              style={post.status === 'STATUS_DENIED' ? { filter: 'grayscale(80%)' } : {}}
             />
           )}
           <div className="post-location">{post.location}</div>

@@ -21,7 +21,7 @@ function Navigation() {
             <ul className="nav-menu">
             <li className="nav-item">
                 <Link to="/about" className="nav-item">
-                    <span className="link-text">О нас</span>
+                    <span className="link-text">Информация</span>
                 </Link>
             </li>
                 {isAuth ? (

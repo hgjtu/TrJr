@@ -50,8 +50,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="/login" element={!isAuth ? <LoginForm /> : <Navigate to="/" />} />
-        <Route path="/register" element={!isAuth ? <RegisterForm /> : <Navigate to="/" />} />
+        <Route path="/login" element={!isAuth ? <LoginForm /> : <Navigate to="/profile" />} />
+        <Route path="/register" element={!isAuth ? <RegisterForm /> : <Navigate to="/profile" />} />
         
         <Route path="/about" element={<About />} />
 

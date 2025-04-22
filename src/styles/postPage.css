@@ -13,8 +13,9 @@
 
 /* Кнопки и ссылки */
 .back-link {
-  display: inline-block;
-  margin-bottom: 20px;
+  display: block;
+  margin: 0 auto 20px auto;
+  padding: 8px 16px;
   color: #333;
   text-decoration: none;
   background: none;
@@ -278,6 +279,69 @@
   from {
     opacity: 0;
     transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Стили для отклоненного поста */
+.denied-banner {
+  background-color: #ffebee;
+  border-left: 4px solid #f44336;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.denied-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.denied-text {
+  color: #d32f2f;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.resubmit-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  margin-left: 15px;
+}
+
+.resubmit-button:hover {
+  background-color: #d32f2f;
+}
+
+.resubmit-button:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.denied-image {
+  filter: grayscale(80%);
+  opacity: 0.9;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;

@@ -139,3 +139,35 @@
       gap: 3px;
     }
   }
+
+  /* Добавьте эти стили в ваш postCard.css */
+
+.post-card.denied {
+  opacity: 0.85;
+  position: relative;
+}
+
+.post-denied-banner {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #e74c3c;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.post-card.denied .post-title,
+.post-card.denied .post-description {
+  color: #95a5a6;
+}
+
+.post-card.denied .post-author {
+  color: #bdc3c7;
+}

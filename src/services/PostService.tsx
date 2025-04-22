@@ -56,10 +56,14 @@ export default class PostService{
     static async getRecommendedPosts(): Promise <AxiosResponse<Response>>{
         return $api.get<Response>(`/posts/get-recommended-posts-data`);
     }
+
+    static async resubmitPost(postId: String) {
+        return $api.put<Response>(`/posts/resubmit/${postId}`);
+      }
+
     static async getModeratorData(searchQuery: String): Promise <AxiosResponse<Response>>{
         return PostService.getPostsData("0", "6", "moderator", searchQuery);
     }
-
     static async moderatePost(postID: String, decision: String, feedback: String): Promise <AxiosResponse<Response>>{
         return $api.post<Response>(`/moderators/${postID}/decision/${decision}`);
     }
