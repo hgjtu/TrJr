@@ -19,6 +19,11 @@ function Navigation() {
     return (
         <nav className="navbar">
             <ul className="nav-menu">
+            <li className="nav-item">
+                <Link to="/about" className="nav-item">
+                    <span className="link-text">О нас</span>
+                </Link>
+            </li>
                 {isAuth ? (
                     <>
                         {isAdmin && (
