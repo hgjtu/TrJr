@@ -29,4 +29,8 @@ export default class UserService{
             }
         });
     }
+    
+    static async changePassword(oldPassword: String, newPassword: String): Promise <AxiosResponse<Response>>{
+        return $api.put<Response>("/users/change-password", {oldPassword, newPassword});
+    }
 }

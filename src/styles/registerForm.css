@@ -55,7 +55,7 @@
   }
   
   /* Login Link */
-  .login-link {
+  .login-link-register {
     display: block;
     text-align: center;
     color: #7f8c8d;
@@ -64,7 +64,7 @@
     transition: color 0.2s;
   }
   
-  .login-link:hover {
+  .login-link-register:hover {
     color: #3498db;
     text-decoration: underline;
   }

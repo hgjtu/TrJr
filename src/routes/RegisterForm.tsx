@@ -51,7 +51,7 @@ const RegisterForm: FC = () => {
             placeholder="Пароль"
           />
           <button className="register-button" onClick={handleRegistration}>Зарегистрироваться</button>
-          <Link className="login-link" to="/login">Уже есть аккаунт? Войти</Link>
+          <Link className="login-link-register" to="/login">Уже есть аккаунт? Войти</Link>
         </div>
       )
 };

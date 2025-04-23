@@ -19,15 +19,15 @@ function Navigation() {
     return (
         <nav className="navbar">
             <ul className="nav-menu">
-            <li className="nav-item">
-                <Link to="/about" className="nav-item">
+            <li className="nav-item highlight">
+                <Link to="/about" className="nav-link">
                     <span className="link-text">Информация</span>
                 </Link>
             </li>
                 {isAuth ? (
                     <>
                         {isAdmin && (
-                            <li className="nav-item">
+                            <li className="nav-item highlight">
                                 <Link to="/moderator" className="nav-link admin-link">
                                     <span className="link-text">Панель модератора</span>
                                 </Link>
@@ -62,7 +62,7 @@ function Navigation() {
                 ) : (
                     <>
                         <li className="nav-item">
-                            <Link to="/login" className="nav-link login-link">
+                            <Link to="/login" className="nav-link highlight">
                                 <span className="link-text">Войти</span>
                             </Link>
                         </li>
