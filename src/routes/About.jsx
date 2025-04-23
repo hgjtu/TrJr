@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiAirplay, FiMapPin, FiSunrise } from 'react-icons/fi';
+import { FiGlobe, FiCamera, FiSunrise } from 'react-icons/fi';
 import '../styles/home.css';
 import '../styles/about.css';
 
@@ -48,11 +48,11 @@ const About = () => {
           <div className="dream-content">
             <h2>Мои мечты</h2>
             <div className="dream-item">
-              <div className="dream-icon"><FiAirplay color="#4CAF50" size={32} /></div>
+              <div className="dream-icon"><FiGlobe color="#4CAF50" size={32} /></div>
               <p>Когда-нибудь увидеть океан — почувствовать его запах, услышать шум волн</p>
             </div>
             <div className="dream-item">
-              <div className="dream-icon"><FiMapPin color="#4CAF50" size={32} /></div>
+              <div className="dream-icon"><FiCamera color="#4CAF50" size={32} /></div>
               <p>Побродить по старинным европейским улочкам</p>
             </div>
             <div className="dream-item">
