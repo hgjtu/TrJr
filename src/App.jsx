@@ -18,6 +18,7 @@ import PostPage from './routes/PostPage';
 import CreatePostPage from './routes/CreatePostPage';
 import NotFound from './routes/Errors';
 import './App.css';
+import LoadingSpinner from "./components/LoadingSpinner";
 
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
   }, []);
   
   if (isLoading) {
-      return <div>Loading...</div>; // добавить спинер
+      return <LoadingSpinner />;
   }
 
   return (
