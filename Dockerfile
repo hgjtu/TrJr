@@ -8,7 +8,7 @@ RUN npm install --frozen-lockfile
 
 COPY . .
 
-RUN npm run build
+RUN npm run build --max_old_space_size=1024
 
 FROM nginx:alpine
 
