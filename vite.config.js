@@ -7,6 +7,9 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
   },
+  define: {
+    'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL)
+  },
   server: {
     port: process.env.PORT || 3000,
     strictPort: true
