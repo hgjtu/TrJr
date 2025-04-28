@@ -1,24 +1,24 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { setAuth, setUser } from './reducers/userReducer';
-import AuthService from "./services/AuthService";
-import RoleGuard from './components/RoleGuard';
-import Header from './components/Header';
-import LoginForm from './routes/LoginForm';
-import RegisterForm from './routes/RegisterForm';
-import PrivateRoute from './components/PrivateRoute';
-import Home from './routes/Home';
-import About from './routes/About';
-import Profile from './routes/Profile';
-import UserPage from './routes/UserPage';
-import AdminPage from './routes/AdminPage';
-import ModeratorPage from "./routes/ModeratorPage";
-import PostPage from './routes/PostPage';
-import CreatePostPage from './routes/CreatePostPage';
-import NotFound from './routes/Errors';
+import { setAuth, setUser } from './reducers/userReducer.tsx';
+import AuthService from "./services/AuthService.tsx";
+import RoleGuard from './components/RoleGuard.tsx';
+import Header from './components/Header.tsx';
+import LoginForm from './routes/LoginForm.tsx';
+import RegisterForm from './routes/RegisterForm.tsx';
+import PrivateRoute from './components/PrivateRoute.tsx';
+import Home from './routes/Home.tsx';
+import About from './routes/About.tsx';
+import Profile from './routes/Profile.tsx';
+import UserPage from './routes/UserPage.tsx';
+import AdminPage from './routes/AdminPage.tsx';
+import ModeratorPage from "./routes/ModeratorPage.tsx";
+import PostPage from './routes/PostPage.tsx';
+import CreatePostPage from './routes/CreatePostPage.tsx';
+import NotFound from './routes/Errors.tsx';
 import './App.css';
-import LoadingSpinner from "./components/LoadingSpinner";
+import LoadingSpinner from "./components/LoadingSpinner.tsx";
 
 
 function App() {
