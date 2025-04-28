@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = process.env.VITE_API_URL || import.meta.env.VITE_API_URL;
+const API_URL = process.env.REACT_APP_API_BASE_URL + "/api/v1" || 'http://localhost:8010/api/v1';
 
 const $api = axios.create({
     withCredentials: true,

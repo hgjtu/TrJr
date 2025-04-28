@@ -7,4 +7,12 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
   },
+  server: {
+    port: process.env.PORT || 3000,
+    strictPort: true
+  },
+  preview: {
+    port: process.env.PORT || 3000,
+    strictPort: true
+  }
 })
