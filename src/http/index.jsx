@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'https://trjrapi.railway.internal/api/v1';
+const API_URL = 'https://trjrapi-production.up.railway.app/api/v1';
 
 const $api = axios.create({
     withCredentials: true,
