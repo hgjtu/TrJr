@@ -3,29 +3,24 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Копируем package.json и package-lock.json
+# Копируем зависимости и устанавливаем их
 COPY package*.json ./
+RUN npm install
 
-# Устанавливаем зависимости
-RUN npm ci
-
-# Копируем остальные файлы
+# Копируем исходный код
 COPY . .
 
-# Собираем приложение
+# Собираем приложение (убедитесь, что скрипт "build" существует в package.json)
 RUN npm run build
 
-# Шаг 2: Настройка сервера (nginx)
+# Шаг 2: Запуск nginx
 FROM nginx:alpine
 
-# Копируем собранные файлы из builder в nginx
+# Копируем билд из стадии builder
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Копируем конфиг nginx (если нужен кастомный)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# (Опционально) Кастомный конфиг nginx для SPA
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Открываем порт 80
 EXPOSE 80
-
-# Запускаем nginx
 CMD ["nginx", "-g", "daemon off;"]
