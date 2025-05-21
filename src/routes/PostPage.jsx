@@ -122,7 +122,7 @@ const PostPage = () => {
 
   if (!post) return <LoadingSpinner />;
 
-  const isAuthor = post.author === user.username;
+  const isAuthor = user && user.username && post && post.author === user.username;
   const isDenied = post.status === 'STATUS_DENIED';
 
   return (
